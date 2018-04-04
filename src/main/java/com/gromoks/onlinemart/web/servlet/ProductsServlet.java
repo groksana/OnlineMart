@@ -31,7 +31,7 @@ public class ProductsServlet extends HttpServlet {
         PageGenerator pageGenerator = PageGenerator.instance();
 
         Map<String, Object> map = new HashMap<>();
-        map.put("username", "Oksana");
+        map.put("products", productList);
         String page = pageGenerator.getPage("products.ftl", map);
         writer.write(page);
 
