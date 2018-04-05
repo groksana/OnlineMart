@@ -12,7 +12,7 @@ public class SessionStore {
         sessionList.add(session);
     }
 
-    public boolean checkByToken(Session token) {
+    public boolean checkByToken(String token) {
         for (Session session : sessionList) {
             if (session.getToken().equals(token)) {
                 return true;
