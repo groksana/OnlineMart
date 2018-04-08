@@ -2,11 +2,15 @@ package com.gromoks.onlinemart.service.security;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.service.security.entity.Session;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SessionStore {
+    private final Logger log = LoggerFactory.getLogger(getClass());
+
     private List<Session> sessionList = new ArrayList<>();
 
     public void addSession(Session session) {
@@ -14,15 +18,21 @@ public class SessionStore {
     }
 
     public boolean checkByToken(String token) {
+        log.info("Start to check by user token = {}", token);
+
         for (Session session : sessionList) {
             if (session.getToken().equals(token)) {
                 return true;
             }
         }
+
+        log.info("Finish to check by user token");
         return false;
     }
 
     public void addProductToSessionCart(String token, Product product) {
+        log.info("Start to add product to session cart, product = {}", product);
+
         for (Session session : sessionList) {
             if (session.getToken().equals(token)) {
                 List<Product> products = session.getCart();
@@ -33,15 +43,20 @@ public class SessionStore {
                 session.setCart(products);
             }
         }
+        log.info("Finish to add product to session cart, product = {}", product);
     }
 
     public List<Product> getCartByToken(String token) {
+        log.info("Start to get cart by token = {}", token);
+
         List<Product> products = null;
         for (Session session : sessionList) {
             if (session.getToken().equals(token)) {
                 products = session.getCart();
             }
         }
+
+        log.info("Finish to check cart by token");
         return products;
     }
 }

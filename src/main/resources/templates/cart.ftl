@@ -70,7 +70,7 @@
             </tbody>
         </table>
         <hr>
-    </div> <!-- /container -->
+    </div>
 </main>
 
 <footer class="container">

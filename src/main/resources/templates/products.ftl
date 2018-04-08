@@ -70,10 +70,8 @@
                </div>
            </#list>
         </div>
-
         <hr>
-
-    </div> <!-- /container -->
+    </div>
 
 </main>
 

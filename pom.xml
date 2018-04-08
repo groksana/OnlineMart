@@ -16,6 +16,15 @@
         <!-- Maven plugins properties -->
         <maven-compiler-plugin.version>2.5.1</maven-compiler-plugin.version>
 
+        <!-- Jetty properties -->
+        <jetty.version>9.3.0.M0</jetty.version>
+
+        <!-- Database properties -->
+        <mysql.version>5.1.26</mysql.version>
+
+        <!-- FreeMarker properties-->
+        <freemarker.version>2.3.20</freemarker.version>
+
         <!-- Logging properties-->
         <slf4j.version>1.7.25</slf4j.version>
         <logback.version>1.2.3</logback.version>
@@ -36,27 +45,30 @@
     </build>
 
     <dependencies>
-        <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>2.3.20</version>
-        </dependency>
+        <!-- Jetty -->
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>9.3.0.M0</version>
+            <version>${jetty.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>9.3.0.M0</version>
+            <version>${jetty.version}</version>
         </dependency>
 
         <!-- SQL -->
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>5.1.26</version>
+            <version>${mysql.version}</version>
+        </dependency>
+
+        <!-- Freemarker -->
+        <dependency>
+            <groupId>org.freemarker</groupId>
+            <artifactId>freemarker</artifactId>
+            <version>${freemarker.version}</version>
         </dependency>
 
         <!--Logging-->
