@@ -40,7 +40,7 @@
                 <a class="nav-link" href="#"><span class="fa fa-user"></span>Your Account</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="#"><span class="fa fa-shopping-cart"></span>Cart</a>
+                <a class="nav-link" href="/cart"><span class="fa fa-shopping-cart"></span>Cart</a>
             </li>
         </ul>
     </div>
@@ -69,11 +69,9 @@
                 <h5>
                     <small>${description}</small>
                 </h5>
-                <div class="section" style="padding-bottom:20px;">
-                    <button class="btn btn-success"><span style="margin-right:20px" class="fa fa-shopping-cart"
-                                                          aria-hidden="true"></span> Add to cart
-                    </button>
-                </div>
+                <form class="form-signin" action="/cart/${id}" method="POST">
+                    <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">Add To Cart</button>
+                </form>
             </div>
         </div>
         <hr>

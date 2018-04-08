@@ -1,5 +1,6 @@
 package com.gromoks.onlinemart.service.security;
 
+import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.service.security.entity.Session;
 
 import java.util.ArrayList;
@@ -19,5 +20,28 @@ public class SessionStore {
             }
         }
         return false;
+    }
+
+    public void addProductToSessionCart(String token, Product product) {
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                List<Product> products = session.getCart();
+                if (products == null) {
+                    products = new ArrayList<>();
+                }
+                products.add(product);
+                session.setCart(products);
+            }
+        }
+    }
+
+    public List<Product> getCartByToken(String token) {
+        List<Product> products = null;
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                products = session.getCart();
+            }
+        }
+        return products;
     }
 }

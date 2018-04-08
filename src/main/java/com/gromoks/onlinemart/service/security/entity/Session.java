@@ -36,6 +36,14 @@ public class Session {
         this.user = user;
     }
 
+    public List<Product> getCart() {
+        return cart;
+    }
+
+    public void setCart(List<Product> cart) {
+        this.cart = cart;
+    }
+
     @Override
     public String toString() {
         return "Session{" +

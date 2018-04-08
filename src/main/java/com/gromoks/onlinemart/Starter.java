@@ -5,6 +5,8 @@ import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
 import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
+import com.gromoks.onlinemart.web.servlet.CartAddServlet;
+import com.gromoks.onlinemart.web.servlet.CartServlet;
 import com.gromoks.onlinemart.web.servlet.ProductServlet;
 import com.gromoks.onlinemart.web.servlet.ProductsServlet;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
@@ -20,9 +22,12 @@ public class Starter {
 
     public static void main(String[] args) throws Exception {
 
+        SessionStore sessionStore = new SessionStore();
+
         ProductsServlet productsServlet = new ProductsServlet(initProductService());
         ProductServlet productServlet = new ProductServlet(initProductService());
-        SessionStore sessionStore = new SessionStore();
+        CartAddServlet cartAddServlet = new CartAddServlet(initProductService(), sessionStore);
+        CartServlet cartServlet = new CartServlet(sessionStore);
 
         LoginServlet loginServlet = new LoginServlet(sessionStore);
 
@@ -32,8 +37,10 @@ public class Starter {
         context.addServlet(new ServletHolder(productsServlet), "/products");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(productServlet), "/product/*");
+        context.addServlet(new ServletHolder(cartAddServlet), "/cart/*");
+        context.addServlet(new ServletHolder(cartServlet), "/cart");
 
-        context.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(securityFilter), "/cart/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(8080);
         server.setHandler(context);
