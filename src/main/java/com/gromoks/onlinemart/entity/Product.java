@@ -3,6 +3,10 @@ package com.gromoks.onlinemart.entity;
 public class Product {
     private String name;
     private double price;
+    private String picturePath;
+
+    public Product() {
+    }
 
     public Product(String name, double price) {
         this.name = name;
@@ -25,11 +29,20 @@ public class Product {
         this.price = price;
     }
 
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
                 "name='" + name + '\'' +
                 ", price=" + price +
+                ", picturePath='" + picturePath + '\'' +
                 '}';
     }
 }

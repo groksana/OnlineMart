@@ -1,4 +1,4 @@
-package com.gromoks.onlinemart.security.entity;
+package com.gromoks.onlinemart.service.security.entity;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.entity.User;

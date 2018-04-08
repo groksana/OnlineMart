@@ -1,8 +1,8 @@
 package com.gromoks.onlinemart.web.servlet.security;
 
 import com.gromoks.onlinemart.entity.User;
-import com.gromoks.onlinemart.security.SessionStore;
-import com.gromoks.onlinemart.security.entity.Session;
+import com.gromoks.onlinemart.service.security.SessionStore;
+import com.gromoks.onlinemart.service.security.entity.Session;
 import com.gromoks.onlinemart.web.templater.PageGenerator;
 
 import javax.servlet.ServletException;

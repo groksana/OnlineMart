@@ -1,7 +1,6 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.web.templater.PageGenerator;
 
 import javax.servlet.ServletException;
@@ -15,31 +14,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ProductsServlet extends HttpServlet {
-
-    private ProductService productService;
+public class ProductServlet extends HttpServlet {
     private List<Product> productList = new ArrayList<>();
-
-    public ProductsServlet(ProductService productService) {
-        this.productService = productService;
-    }
 
     @Override
     public void init() throws ServletException {
-        /*productList.add(new Product("iPhone7", 20000));
-        productList.add(new Product("Стол", 2000));
-        productList.add(new Product("Samsung", 10000));
-        productList.add(new Product("Sony", 2000));
-        productList.add(new Product("Lenovo", 2000));
-        productList.add(new Product("iPhone8", 10000));
-        productList.add(new Product("iPhoneX", 2000));
-        productList.add(new Product("Nokia", 2000));*/
-        productList = productService.getAllProduct();
+        productList.add(new Product("iPhone7", 20000));
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
+
+        String[] uris=req.getRequestURI().split("/");
+        String productId = uris[2];
 
         PageGenerator pageGenerator = PageGenerator.instance();
 

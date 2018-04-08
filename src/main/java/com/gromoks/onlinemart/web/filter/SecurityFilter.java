@@ -1,6 +1,6 @@
 package com.gromoks.onlinemart.web.filter;
 
-import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.service.security.SessionStore;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;

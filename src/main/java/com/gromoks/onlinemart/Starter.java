@@ -1,7 +1,11 @@
 package com.gromoks.onlinemart;
 
-import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.dao.config.JdbcConnection;
+import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
+import com.gromoks.onlinemart.service.ProductService;
+import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
+import com.gromoks.onlinemart.web.servlet.ProductServlet;
 import com.gromoks.onlinemart.web.servlet.ProductsServlet;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
 import org.eclipse.jetty.server.Server;
@@ -16,7 +20,8 @@ public class Starter {
 
     public static void main(String[] args) throws Exception {
 
-        ProductsServlet productsServlet = new ProductsServlet();
+        ProductsServlet productsServlet = new ProductsServlet(initProductService());
+        ProductServlet productServlet = new ProductServlet();
         SessionStore sessionStore = new SessionStore();
 
         LoginServlet loginServlet = new LoginServlet(sessionStore);
@@ -26,6 +31,7 @@ public class Starter {
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.addServlet(new ServletHolder(productsServlet), "/products");
         context.addServlet(new ServletHolder(loginServlet), "/login");
+        context.addServlet(new ServletHolder(productServlet), "/product/*");
 
         context.addFilter(new FilterHolder(securityFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
@@ -33,5 +39,12 @@ public class Starter {
         server.setHandler(context);
 
         server.start();
+    }
+
+    private static ProductService initProductService() {
+        JdbcConnection jdbcConnection = new JdbcConnection();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
+        ProductService productService = new ProductService(jdbcProductDao);
+        return productService;
     }
 }

@@ -61,11 +61,11 @@
            <#list products as product>
                <div class="col-md-4">
                    <div class="boximg">
-                       <img src="https://www.citrus.ua/upload/new_iblock/d29/e68d1a41da61b56d4f7e3708facfa034.jpg"
+                       <img src=${product.picturePath}
                             width="180" height="236">
                    </div>
                    <h2>${product.name}</h2>
-                   <p>${product.name} : ${product.price}</p>
+                   <p>Price : ${product.price}</p>
                    <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
                </div>
            </#list>

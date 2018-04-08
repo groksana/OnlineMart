@@ -1,6 +1,6 @@
-package com.gromoks.onlinemart.security;
+package com.gromoks.onlinemart.service.security;
 
-import com.gromoks.onlinemart.security.entity.Session;
+import com.gromoks.onlinemart.service.security.entity.Session;
 
 import java.util.ArrayList;
 import java.util.List;
