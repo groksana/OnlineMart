@@ -12,7 +12,11 @@ public class ProductService {
         this.jdbcProductDao = jdbcProductDao;
     }
 
-    public List<Product> getAllProduct() {
-        return jdbcProductDao.getAllProduct();
+    public List<Product> getAll() {
+        return jdbcProductDao.getAll();
+    }
+
+    public Product getById(int productId) {
+        return jdbcProductDao.getById(productId);
     }
 }

@@ -26,15 +26,7 @@ public class ProductsServlet extends HttpServlet {
 
     @Override
     public void init() throws ServletException {
-        /*productList.add(new Product("iPhone7", 20000));
-        productList.add(new Product("Стол", 2000));
-        productList.add(new Product("Samsung", 10000));
-        productList.add(new Product("Sony", 2000));
-        productList.add(new Product("Lenovo", 2000));
-        productList.add(new Product("iPhone8", 10000));
-        productList.add(new Product("iPhoneX", 2000));
-        productList.add(new Product("Nokia", 2000));*/
-        productList = productService.getAllProduct();
+        productList = productService.getAll();
     }
 
     @Override

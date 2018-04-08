@@ -21,7 +21,7 @@ public class Starter {
     public static void main(String[] args) throws Exception {
 
         ProductsServlet productsServlet = new ProductsServlet(initProductService());
-        ProductServlet productServlet = new ProductServlet();
+        ProductServlet productServlet = new ProductServlet(initProductService());
         SessionStore sessionStore = new SessionStore();
 
         LoginServlet loginServlet = new LoginServlet(sessionStore);

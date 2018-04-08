@@ -6,7 +6,7 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Products</title>
+    <title>Product</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -35,10 +35,6 @@
                 <a class="nav-link disabled" href="#">Add Product</a>
             </li>
         </ul>
-        <form class="form-inline mx-auto">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
                 <a class="nav-link" href="#"><span class="fa fa-user"></span>Your Account</a>
@@ -58,23 +54,30 @@
 
     <div class="container">
         <div class="row">
-           <#list products as product>
-               <div class="col-md-4">
-                   <div class="boximg">
-                       <img src=${product.picturePath}
-                            width="180" height="236">
-                   </div>
-                   <h2>${product.name}</h2>
-                   <p>Price : $ ${product.price}</p>
-                   <p><a class="btn btn-secondary" href="/product/${product.id}" role="button">View details &raquo;</a></p>
-               </div>
-           </#list>
+            <div class="col-md-4">
+                <div class="boximg">
+                    <img src=${picturePath}
+                                 width="220" height="280">
+                </div>
+            </div>
+            <div class="col-md-4" style="border:0px solid gray">
+                <h3>${name}</h3>
+
+                <h5 class="title-price">Price:</h5>
+                <h3 style="margin-top:0px;">$ ${price}</h3>
+                <h5 class="title-description">Description:</h5>
+                <h5>
+                    <small>${description}</small>
+                </h5>
+                <div class="section" style="padding-bottom:20px;">
+                    <button class="btn btn-success"><span style="margin-right:20px" class="fa fa-shopping-cart"
+                                                          aria-hidden="true"></span> Add to cart
+                    </button>
+                </div>
+            </div>
         </div>
-
         <hr>
-
     </div> <!-- /container -->
-
 </main>
 
 <footer class="container">
@@ -84,9 +87,9 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
-<script src = "https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
-        integrity = "sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
-        crossorigin = "anonymous" ></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+        integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+        crossorigin="anonymous"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
         integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"

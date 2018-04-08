@@ -1,9 +1,11 @@
 package com.gromoks.onlinemart.entity;
 
 public class Product {
+    private int id;
     private String name;
     private double price;
     private String picturePath;
+    private String description;
 
     public Product() {
     }
@@ -11,6 +13,14 @@ public class Product {
     public Product(String name, double price) {
         this.name = name;
         this.price = price;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -37,12 +47,22 @@ public class Product {
         this.picturePath = picturePath;
     }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
     @Override
     public String toString() {
         return "Product{" +
-                "name='" + name + '\'' +
+                "id=" + id +
+                ", name='" + name + '\'' +
                 ", price=" + price +
                 ", picturePath='" + picturePath + '\'' +
+                ", description='" + description + '\'' +
                 '}';
     }
 }

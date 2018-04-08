@@ -33,6 +33,17 @@ public class PageGenerator {
         return stream.toString();
     }
 
+    public String getPage(String filename, Object data) {
+        Writer stream = new StringWriter();
+        try {
+            Template template = cfg.getTemplate(HTML_DIR + File.separator + filename);
+            template.process(data, stream);
+        } catch (IOException | TemplateException e) {
+            throw new RuntimeException(e);
+        }
+        return stream.toString();
+    }
+
     private PageGenerator() {
         cfg = new Configuration();
     }
