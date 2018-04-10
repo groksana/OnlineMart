@@ -2,7 +2,7 @@ package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.service.ProductService;
-import com.gromoks.onlinemart.web.templater.PageGenerator;
+import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -26,9 +26,11 @@ public class ProductServlet extends HttpServlet {
         String[] uris=req.getRequestURI().split("/");
         int productId = Integer.valueOf(uris[2]);
 
-        PageGenerator pageGenerator = PageGenerator.instance();
         Product product = productService.getById(productId);
-        String page = pageGenerator.getPage("product.ftl", product);
+
+        ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
+        String page = thymeLeafPageGenerator.getPage("product", "product", product);
+
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

@@ -58,17 +58,15 @@
 
     <div class="container">
         <div class="row">
-           <#list products as product>
-               <div class="col-md-4">
+               <div class="col-md-4" th:each="product : ${products}">
                    <div class="boximg">
-                       <img src=${product.picturePath}
+                       <img th:src=${product.picturePath}
                             width="180" height="236">
                    </div>
-                   <h2>${product.name}</h2>
-                   <p>Price : $ ${product.price}</p>
-                   <p><a class="btn btn-secondary" href="/product/${product.id}" role="button">View details &raquo;</a></p>
+                   <h2 th:text="${product.name}">Name</h2>
+                   <p th:text="'Price : $' + ${product.price}">Price</p>
+                   <p><a class="btn btn-secondary" th:href="'/product/' + ${product.id}" role="button">View details &raquo;</a></p>
                </div>
-           </#list>
         </div>
         <hr>
     </div>

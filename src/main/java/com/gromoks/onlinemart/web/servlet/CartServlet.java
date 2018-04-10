@@ -2,7 +2,7 @@ package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.service.security.SessionStore;
-import com.gromoks.onlinemart.web.templater.PageGenerator;
+import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -11,9 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class CartServlet extends HttpServlet {
     private SessionStore sessionStore;
@@ -43,10 +41,8 @@ public class CartServlet extends HttpServlet {
 
         if (isLoggedIn) {
             List<Product> productCart = sessionStore.getCartByToken(token);
-            PageGenerator pageGenerator = PageGenerator.instance();
-            Map<String, Object> map = new HashMap<>();
-            map.put("cart", productCart);
-            String page = pageGenerator.getPage("cart.ftl", map);
+            ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
+            String page = thymeLeafPageGenerator.getPage("cart", "cart", productCart);
             writer.write(page);
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {

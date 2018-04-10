@@ -56,26 +56,26 @@
         <div class="row">
             <div class="col-md-4">
                 <div class="boximg">
-                    <img src=${picturePath}
+                    <img th:src=${product.picturePath}
                                  width="220" height="280">
                 </div>
             </div>
             <div class="col-md-4" style="border:0px solid gray">
-                <h3>${name}</h3>
+                <h3 th:text="${product.name}">Product Name</h3>
 
                 <h5 class="title-price">Price:</h5>
-                <h3 style="margin-top:0px;">$ ${price}</h3>
+                <h3 style="margin-top:0px;" th:text="'$' + ${product.price}">Price </h3>
                 <h5 class="title-description">Description:</h5>
                 <h5>
-                    <small>${description}</small>
+                    <small th:utext="${product.description}">Description</small>
                 </h5>
-                <form class="form-signin" action="/cart/${id}" method="POST">
+                <form class="form-signin" th:action="'/cart/' + ${product.id}" method="POST">
                     <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">Add To Cart</button>
                 </form>
             </div>
         </div>
         <hr>
-    </div> <!-- /container -->
+    </div>
 </main>
 
 <footer class="container">

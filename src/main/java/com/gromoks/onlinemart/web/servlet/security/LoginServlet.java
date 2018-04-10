@@ -3,7 +3,7 @@ package com.gromoks.onlinemart.web.servlet.security;
 import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.service.security.entity.Session;
-import com.gromoks.onlinemart.web.templater.PageGenerator;
+import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -33,9 +33,9 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
-        PageGenerator pageGenerator = PageGenerator.instance();
+        ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
 
-        String page = pageGenerator.getPage("login.ftl", new HashMap<>());
+        String page = thymeLeafPageGenerator.getPage("login");
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

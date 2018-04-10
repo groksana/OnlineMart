@@ -22,8 +22,8 @@
         <!-- Database properties -->
         <mysql.version>5.1.26</mysql.version>
 
-        <!-- FreeMarker properties-->
-        <freemarker.version>2.3.20</freemarker.version>
+        <!-- ThymeLeaf properties -->
+        <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
 
         <!-- Logging properties-->
         <slf4j.version>1.7.25</slf4j.version>
@@ -64,11 +64,11 @@
             <version>${mysql.version}</version>
         </dependency>
 
-        <!-- Freemarker -->
+        <!-- ThymeLeaf -->
         <dependency>
-            <groupId>org.freemarker</groupId>
-            <artifactId>freemarker</artifactId>
-            <version>${freemarker.version}</version>
+            <groupId>org.thymeleaf</groupId>
+            <artifactId>thymeleaf</artifactId>
+            <version>${thymeleaf.version}</version>
         </dependency>
 
         <!--Logging-->

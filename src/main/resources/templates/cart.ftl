@@ -61,12 +61,10 @@
             </tr>
             </thead>
             <tbody>
-            <#list cart as product>
-            <tr>
-                <td>${product.name}</td>
-                <td>${product.price}</td>
+            <tr th:each="product : ${cart}">
+                <td th:text="${product.name}">Name</td>
+                <td th:text="${product.price}">Price</td>
             </tr>
-            </#list>
             </tbody>
         </table>
         <hr>
