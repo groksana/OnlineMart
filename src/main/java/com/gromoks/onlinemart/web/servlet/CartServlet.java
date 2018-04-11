@@ -1,7 +1,7 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.service.security.SessionStore;
+import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
@@ -28,28 +28,22 @@ public class CartServlet extends HttpServlet {
 
         Cookie[] cookies = req.getCookies();
 
-        boolean isLoggedIn = false;
         String token = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
                 if ("security-token".equals(cookieName)) {
-                    if (sessionStore.checkByToken(cookie.getValue())) {
+                    if (sessionStore.isValid(cookie.getValue())) {
                         token = cookie.getValue();
-                        isLoggedIn = true;
                     }
                 }
             }
         }
 
-        if (isLoggedIn) {
-            List<Product> productCart = sessionStore.getCartByToken(token);
-            ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
-            String page = thymeLeafPageGenerator.getPage("cart", XHTML, "cart", productCart);
-            writer.write(page);
-            resp.setStatus(HttpServletResponse.SC_OK);
-        } else {
-            resp.sendRedirect("/login");
-        }
+        List<Product> productCart = sessionStore.getCartByToken(token);
+        ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
+        String page = thymeLeafPageGenerator.getPage("cart", XHTML, "cart", productCart);
+        writer.write(page);
+        resp.setStatus(HttpServletResponse.SC_OK);
     }
 }

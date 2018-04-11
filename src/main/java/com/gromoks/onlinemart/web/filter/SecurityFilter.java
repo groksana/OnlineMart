@@ -1,6 +1,6 @@
 package com.gromoks.onlinemart.web.filter;
 
-import com.gromoks.onlinemart.service.security.SessionStore;
+import com.gromoks.onlinemart.security.SessionStore;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -31,7 +31,7 @@ public class SecurityFilter implements Filter {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
                 if ("security-token".equals(cookieName)) {
-                   if (sessionStore.checkByToken(cookie.getValue())) {
+                   if (sessionStore.isValid(cookie.getValue())) {
                        isLoggedIn = true;
                    }
                 }

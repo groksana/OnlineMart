@@ -1,9 +1,8 @@
 package com.gromoks.onlinemart.web.servlet.security;
 
 import com.gromoks.onlinemart.entity.User;
-import com.gromoks.onlinemart.service.security.SessionStore;
-import com.gromoks.onlinemart.service.security.entity.Session;
-import com.gromoks.onlinemart.web.entity.TemplateMode;
+import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.security.entity.Session;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
@@ -72,6 +71,8 @@ public class LoginServlet extends HttpServlet {
 
         if (!isLoggedIn) {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        } else {
+            resp.sendRedirect("/products");
         }
     }
 }

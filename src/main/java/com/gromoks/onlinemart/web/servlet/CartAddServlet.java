@@ -2,7 +2,7 @@ package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.service.ProductService;
-import com.gromoks.onlinemart.service.security.SessionStore;
+import com.gromoks.onlinemart.security.SessionStore;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -23,36 +23,25 @@ public class CartAddServlet extends HttpServlet {
     }
 
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doGet(req, resp);
-    }
-
-    @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String[] uris=req.getRequestURI().split("/");
+        String[] uris = req.getRequestURI().split("/");
         int productId = Integer.valueOf(uris[2]);
         Cookie[] cookies = req.getCookies();
 
-        boolean isLoggedIn = false;
         String token = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
                 if ("security-token".equals(cookieName)) {
-                    if (sessionStore.checkByToken(cookie.getValue())) {
+                    if (sessionStore.isValid(cookie.getValue())) {
                         token = cookie.getValue();
-                        isLoggedIn = true;
                     }
                 }
             }
         }
 
-        if (isLoggedIn) {
-            Product product = productService.getById(productId);
-            sessionStore.addProductToSessionCart(token, product);
-            resp.sendRedirect("/product/" + productId);
-        } else {
-            resp.sendRedirect("/login");
-        }
+        Product product = productService.getById(productId);
+        sessionStore.addProductToSessionCart(token, product);
+        resp.sendRedirect("/product/" + productId);
     }
 }

@@ -71,9 +71,16 @@
     </div>
 </main>
 
-<footer class="container">
-    <p align="center">&copy; Company 2018</p>
-</footer>
+
+<div class="navbar-fixed-bottom row-fluid">
+    <div class="navbar-inner">
+        <div class="container">
+            <footer class="container">
+                <p align="center">&copy; Company 2018</p>
+            </footer>
+        </div>
+    </div>
+</div>
 
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
         integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"

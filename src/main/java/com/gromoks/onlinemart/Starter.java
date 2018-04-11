@@ -1,9 +1,9 @@
 package com.gromoks.onlinemart;
 
-import com.gromoks.onlinemart.dao.config.JdbcConnection;
+import com.gromoks.onlinemart.dao.config.MyDataSource;
 import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
 import com.gromoks.onlinemart.service.ProductService;
-import com.gromoks.onlinemart.service.security.SessionStore;
+import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
 import com.gromoks.onlinemart.web.servlet.*;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
@@ -18,19 +18,24 @@ import java.util.EnumSet;
 public class Starter {
 
     public static void main(String[] args) throws Exception {
-
+        // common
         SessionStore sessionStore = new SessionStore();
+        MyDataSource myDataSource = new MyDataSource();
+        JdbcProductDao jdbcProductDao = new JdbcProductDao(myDataSource);
+        ProductService productService = new ProductService(jdbcProductDao);
 
-        ProductsServlet productsServlet = new ProductsServlet(initProductService());
-        ProductServlet productServlet = new ProductServlet(initProductService());
-        CartAddServlet cartAddServlet = new CartAddServlet(initProductService(), sessionStore);
+        // servlet
+        ProductsServlet productsServlet = new ProductsServlet(productService);
+        ProductServlet productServlet = new ProductServlet(productService);
+        CartAddServlet cartAddServlet = new CartAddServlet(productService, sessionStore);
         CartServlet cartServlet = new CartServlet(sessionStore);
         AssetsServlet assetsServlet = new AssetsServlet();
 
+        // security
         LoginServlet loginServlet = new LoginServlet(sessionStore);
-
         SecurityFilter securityFilter = new SecurityFilter(sessionStore);
 
+        // server
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.addServlet(new ServletHolder(productsServlet), "/products");
         context.addServlet(new ServletHolder(loginServlet), "/login");
@@ -45,12 +50,5 @@ public class Starter {
         server.setHandler(context);
 
         server.start();
-    }
-
-    private static ProductService initProductService() {
-        JdbcConnection jdbcConnection = new JdbcConnection();
-        JdbcProductDao jdbcProductDao = new JdbcProductDao(jdbcConnection);
-        ProductService productService = new ProductService(jdbcProductDao);
-        return productService;
     }
 }
