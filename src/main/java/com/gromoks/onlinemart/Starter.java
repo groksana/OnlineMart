@@ -5,7 +5,6 @@ import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
 import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
-import com.gromoks.onlinemart.web.servlet.CartAddServlet;
 import com.gromoks.onlinemart.web.servlet.*;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
 import org.eclipse.jetty.server.Server;
