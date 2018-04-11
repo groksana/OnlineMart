@@ -13,12 +13,15 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
+import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
+
 public class CartServlet extends HttpServlet {
     private SessionStore sessionStore;
 
     public CartServlet(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
+
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
@@ -42,7 +45,7 @@ public class CartServlet extends HttpServlet {
         if (isLoggedIn) {
             List<Product> productCart = sessionStore.getCartByToken(token);
             ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
-            String page = thymeLeafPageGenerator.getPage("cart", "cart", productCart);
+            String page = thymeLeafPageGenerator.getPage("cart", XHTML, "cart", productCart);
             writer.write(page);
             resp.setStatus(HttpServletResponse.SC_OK);
         } else {

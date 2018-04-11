@@ -16,7 +16,7 @@
           href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 
     <!-- Custom styles for this template -->
-    <link rel="StyleSheet" href="css/signin.css" TYPE="text/css">
+    <link rel="stylesheet" type="text/css" th:href="@{assets/signin.css}"/>
 </head>
 <body class="text-center">
 <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">

@@ -1,19 +1,24 @@
 package com.gromoks.onlinemart.web.templater;
 
-import com.gromoks.onlinemart.entity.Product;
+import com.gromoks.onlinemart.web.entity.TemplateMode;
 import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.gromoks.onlinemart.web.entity.TemplateMode.getByName;
 
 public class ThymeLeafPageGenerator {
     private static final String HTML_DIR = "templates/";
 
-    private static final String TEMPLATE_MODE = "XHTML";
+    private static final String CSS_DIR = "templates/css/";
 
-    private static final String FILE_EXTENSION = ".ftl";
+    private static final String HTML_FILE_EXTENSION = ".ftl";
+
+    private static final String CSS_FILE_EXTENSION = ".css";
+
+    private static final String HTML_TEMPLATE_MODE = "XHTML";
+
+    private static final String CSS_TEMPLATE_MODE = "CSS";
 
     private final ClassLoaderTemplateResolver resolver;
 
@@ -30,7 +35,9 @@ public class ThymeLeafPageGenerator {
         return thymeLeafPageGenerator;
     }
 
-    public String getPage(String filename, String variableName, Object object) {
+    public String getPage(String filename, TemplateMode templateMode, String variableName, Object object) {
+        initResolver(templateMode);
+
         TemplateEngine engine = new TemplateEngine();
         engine.setTemplateResolver(resolver);
 
@@ -40,7 +47,9 @@ public class ThymeLeafPageGenerator {
         return engine.process(filename, context);
     }
 
-    public String getPage(String filename) {
+    public String getPage(String filename, TemplateMode templateMode) {
+        initResolver(templateMode);
+
         TemplateEngine engine = new TemplateEngine();
         engine.setTemplateResolver(resolver);
 
@@ -49,8 +58,17 @@ public class ThymeLeafPageGenerator {
 
     private ThymeLeafPageGenerator() {
         resolver = new ClassLoaderTemplateResolver();
-        resolver.setTemplateMode(TEMPLATE_MODE);
-        resolver.setSuffix(FILE_EXTENSION);
-        resolver.setPrefix(HTML_DIR);
+    }
+
+    private void initResolver(TemplateMode templateMode) {
+        if (templateMode == getByName(HTML_TEMPLATE_MODE)) {
+            resolver.setTemplateMode(HTML_TEMPLATE_MODE);
+            resolver.setSuffix(HTML_FILE_EXTENSION);
+            resolver.setPrefix(HTML_DIR);
+        } else if (templateMode == getByName(CSS_TEMPLATE_MODE)) {
+            resolver.setTemplateMode(CSS_TEMPLATE_MODE);
+            resolver.setSuffix(CSS_FILE_EXTENSION);
+            resolver.setPrefix(CSS_DIR);
+        }
     }
 }

@@ -3,6 +3,7 @@ package com.gromoks.onlinemart.web.servlet.security;
 import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.service.security.entity.Session;
+import com.gromoks.onlinemart.web.entity.TemplateMode;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.*;
+
+import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
 
 public class LoginServlet extends HttpServlet {
 
@@ -35,7 +38,7 @@ public class LoginServlet extends HttpServlet {
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
 
-        String page = thymeLeafPageGenerator.getPage("login");
+        String page = thymeLeafPageGenerator.getPage("login", XHTML);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

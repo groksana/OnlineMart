@@ -6,9 +6,7 @@ import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.service.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
 import com.gromoks.onlinemart.web.servlet.CartAddServlet;
-import com.gromoks.onlinemart.web.servlet.CartServlet;
-import com.gromoks.onlinemart.web.servlet.ProductServlet;
-import com.gromoks.onlinemart.web.servlet.ProductsServlet;
+import com.gromoks.onlinemart.web.servlet.*;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.servlet.FilterHolder;
@@ -28,6 +26,7 @@ public class Starter {
         ProductServlet productServlet = new ProductServlet(initProductService());
         CartAddServlet cartAddServlet = new CartAddServlet(initProductService(), sessionStore);
         CartServlet cartServlet = new CartServlet(sessionStore);
+        AssetsServlet assetsServlet = new AssetsServlet();
 
         LoginServlet loginServlet = new LoginServlet(sessionStore);
 
@@ -39,6 +38,7 @@ public class Starter {
         context.addServlet(new ServletHolder(productServlet), "/product/*");
         context.addServlet(new ServletHolder(cartAddServlet), "/cart/*");
         context.addServlet(new ServletHolder(cartServlet), "/cart");
+        context.addServlet(new ServletHolder(assetsServlet), "/assets/*");
 
         context.addFilter(new FilterHolder(securityFilter), "/cart/*", EnumSet.of(DispatcherType.REQUEST));
 
