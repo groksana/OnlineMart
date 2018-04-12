@@ -3,7 +3,10 @@ package com.gromoks.onlinemart.web.servlet.security;
 import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.security.entity.Session;
+import com.gromoks.onlinemart.service.UserService;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
@@ -16,19 +19,17 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
+import static com.gromoks.onlinemart.web.util.PasswordEncryption.encryptPassword;
 
 public class LoginServlet extends HttpServlet {
 
-    private List<User> userList = new ArrayList<>();
+    private final Logger log = LoggerFactory.getLogger(getClass());
+    private UserService userService;
     private SessionStore sessionStore;
 
-    public LoginServlet(SessionStore sessionStore) {
+    public LoginServlet(UserService userService, SessionStore sessionStore) {
+        this.userService = userService;
         this.sessionStore = sessionStore;
-    }
-
-    @Override
-    public void init() throws ServletException {
-        userList.add(new User("user", "user"));
     }
 
     @Override
@@ -46,33 +47,28 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String login = req.getParameter("login");
-        String password = req.getParameter("password");
-        boolean isLoggedIn = false;
+        String password = encryptPassword(req.getParameter("password"));
 
-        for (User user : userList) {
-            if (user.getLogin().equals(login) && user.getPassword().equals(password)) {
-                String token = UUID.randomUUID().toString();
-                Cookie cookie = new Cookie("security-token", token);
-                cookie.setMaxAge(10000);
+        User user = userService.getUserByEmailAndPassword(login, password);
 
-                Session session = new Session();
-                session.setToken(token);
-                session.setUser(user);
-                session.setExpireTime(LocalDateTime.now().plusSeconds(10000));
+        if (user != null) {
+            String token = UUID.randomUUID().toString();
+            Cookie cookie = new Cookie("security-token", token);
+            cookie.setMaxAge(10000);
 
-                sessionStore.addSession(session);
+            Session session = new Session();
+            session.setToken(token);
+            session.setUser(user);
+            session.setExpireTime(LocalDateTime.now().plusSeconds(10000));
 
-                resp.addCookie(cookie);
+            sessionStore.addSession(session);
 
-                isLoggedIn = true;
-                break;
-            }
-        }
-
-        if (!isLoggedIn) {
-            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-        } else {
+            resp.addCookie(cookie);
             resp.sendRedirect("/products");
+            log.info("User token {} for user {} has been set", token, user);
+        } else {
+            resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            log.error("Login or password are incorrect for {}", login);
         }
     }
 }

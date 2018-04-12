@@ -3,6 +3,10 @@ package com.gromoks.onlinemart.entity;
 public class User {
     private String login;
     private String password;
+    private String role;
+
+    public User() {
+    }
 
     public User(String login, String password) {
         this.login = login;
@@ -25,11 +29,20 @@ public class User {
         this.password = password;
     }
 
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
     @Override
     public String toString() {
         return "User{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
+                ", role='" + role + '\'' +
                 '}';
     }
 }

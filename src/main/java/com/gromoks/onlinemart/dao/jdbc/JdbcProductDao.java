@@ -1,5 +1,6 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
+import com.gromoks.onlinemart.dao.ProductDao;
 import com.gromoks.onlinemart.dao.config.MyDataSource;
 import com.gromoks.onlinemart.dao.mapper.ProductRowMapper;
 import com.gromoks.onlinemart.entity.Product;
@@ -14,7 +15,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class JdbcProductDao {
+public class JdbcProductDao implements ProductDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
     private static final String GET_ALL_PRODUCT_SQL = "SELECT ID, NAME, PRICE, PICTUREPATH, DESCRIPTION FROM PRODUCT";
@@ -29,6 +30,7 @@ public class JdbcProductDao {
         this.myDataSource = myDataSource;
     }
 
+    @Override
     public List<Product> getAll() {
         log.info("Start query to get all product from DB");
         long startTime = System.currentTimeMillis();
@@ -51,6 +53,7 @@ public class JdbcProductDao {
         }
     }
 
+    @Override
     public Product getById(int productId) {
         log.info("Start query to get product from DB by id = {}", productId);
         long startTime = System.currentTimeMillis();
