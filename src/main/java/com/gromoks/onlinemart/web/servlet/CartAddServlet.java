@@ -1,7 +1,7 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.service.ProductService;
+import com.gromoks.onlinemart.service.impl.ProductServiceImpl;
 import com.gromoks.onlinemart.security.SessionStore;
 
 import javax.servlet.ServletException;
@@ -14,11 +14,11 @@ import static com.gromoks.onlinemart.web.util.RequestParser.*;
 
 public class CartAddServlet extends HttpServlet {
 
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
     private SessionStore sessionStore;
 
-    public CartAddServlet(ProductService productService, SessionStore sessionStore) {
+    public CartAddServlet(ProductServiceImpl productService, SessionStore sessionStore) {
         this.productService = productService;
         this.sessionStore = sessionStore;
     }

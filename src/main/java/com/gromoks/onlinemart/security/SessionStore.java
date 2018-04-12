@@ -7,12 +7,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
+
+import static java.time.LocalDateTime.*;
 
 public class SessionStore {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private List<Session> sessionList = new ArrayList<>();
+    private List<Session> sessionList = Collections.synchronizedList(new ArrayList<>());
 
     public void addSession(Session session) {
         sessionList.add(session);
@@ -21,9 +25,15 @@ public class SessionStore {
     public boolean isValid(String token) {
         log.info("Start to check by user token = {}", token);
 
-        for (Session session : sessionList) {
+        Iterator<Session> iterator = sessionList.iterator();
+        while (iterator.hasNext()) {
+            Session session = iterator.next();
             if (session.getToken().equals(token)) {
-                return true;
+                if ((now().getSecond() - session.getExpireTime().getSecond()) < 10000) {
+                    return true;
+                } else {
+                    iterator.remove();
+                }
             }
         }
 

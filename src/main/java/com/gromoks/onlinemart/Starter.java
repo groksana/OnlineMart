@@ -2,7 +2,7 @@ package com.gromoks.onlinemart;
 
 import com.gromoks.onlinemart.dao.config.MyDataSource;
 import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
-import com.gromoks.onlinemart.service.ProductService;
+import com.gromoks.onlinemart.service.impl.ProductServiceImpl;
 import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.web.filter.MdcFilter;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
@@ -23,7 +23,7 @@ public class Starter {
         SessionStore sessionStore = new SessionStore();
         MyDataSource myDataSource = new MyDataSource();
         JdbcProductDao jdbcProductDao = new JdbcProductDao(myDataSource);
-        ProductService productService = new ProductService(jdbcProductDao);
+        ProductServiceImpl productService = new ProductServiceImpl(jdbcProductDao);
 
         // servlet
         ProductsServlet productsServlet = new ProductsServlet(productService);

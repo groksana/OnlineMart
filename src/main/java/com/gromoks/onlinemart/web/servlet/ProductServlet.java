@@ -1,7 +1,7 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.service.ProductService;
+import com.gromoks.onlinemart.service.impl.ProductServiceImpl;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
@@ -15,9 +15,9 @@ import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 
 public class ProductServlet extends HttpServlet {
 
-    private ProductService productService;
+    private ProductServiceImpl productService;
 
-    public ProductServlet(ProductService productService) {
+    public ProductServlet(ProductServiceImpl productService) {
         this.productService = productService;
     }
 
