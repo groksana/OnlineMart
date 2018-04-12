@@ -11,7 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.XHTML;
+import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 
 public class ProductServlet extends HttpServlet {
 
@@ -31,7 +31,7 @@ public class ProductServlet extends HttpServlet {
         Product product = productService.getById(productId);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
-        String page = thymeLeafPageGenerator.getPage("product", XHTML, "product", product);
+        String page = thymeLeafPageGenerator.getPage("product", HTML, "product", product);
 
         writer.write(page);
 

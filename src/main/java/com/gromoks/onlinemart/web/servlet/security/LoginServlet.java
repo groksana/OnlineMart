@@ -37,7 +37,7 @@ public class LoginServlet extends HttpServlet {
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
 
-        String page = thymeLeafPageGenerator.getPage("login", XHTML);
+        String page = thymeLeafPageGenerator.getPage("login", HTML);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

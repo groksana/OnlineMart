@@ -4,6 +4,7 @@ import com.gromoks.onlinemart.dao.config.MyDataSource;
 import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
 import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.web.filter.MdcFilter;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
 import com.gromoks.onlinemart.web.servlet.*;
 import com.gromoks.onlinemart.web.servlet.security.LoginServlet;
@@ -35,6 +36,9 @@ public class Starter {
         LoginServlet loginServlet = new LoginServlet(sessionStore);
         SecurityFilter securityFilter = new SecurityFilter(sessionStore);
 
+        //logging
+        MdcFilter mdcFilter = new MdcFilter(sessionStore);
+
         // server
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
         context.addServlet(new ServletHolder(productsServlet), "/products");
@@ -45,6 +49,7 @@ public class Starter {
         context.addServlet(new ServletHolder(assetsServlet), "/assets/*");
 
         context.addFilter(new FilterHolder(securityFilter), "/cart/*", EnumSet.of(DispatcherType.REQUEST));
+        context.addFilter(new FilterHolder(mdcFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
         Server server = new Server(8080);
         server.setHandler(context);

@@ -1,6 +1,7 @@
 package com.gromoks.onlinemart.security;
 
 import com.gromoks.onlinemart.entity.Product;
+import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.entity.Session;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,7 +57,21 @@ public class SessionStore {
             }
         }
 
-        log.info("Finish to check cart by token");
+        log.info("Finish to get cart by token");
         return products;
+    }
+
+    public User getUserByToken(String token) {
+        log.info("Start to get user by token = {}", token);
+
+        User user = null;
+        for (Session session : sessionList) {
+            if (session.getToken().equals(token)) {
+                user = session.getUser();
+            }
+        }
+
+        log.info("Finish to get user by token");
+        return user;
     }
 }

@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.XHTML;
+import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 
 public class ProductsServlet extends HttpServlet {
 
@@ -34,7 +34,7 @@ public class ProductsServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
-        String page = thymeLeafPageGenerator.getPage("products", XHTML, "products", productList);
+        String page = thymeLeafPageGenerator.getPage("products", HTML, "products", productList);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

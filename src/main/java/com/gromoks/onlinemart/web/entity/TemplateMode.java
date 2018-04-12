@@ -1,7 +1,7 @@
 package com.gromoks.onlinemart.web.entity;
 
 public enum TemplateMode {
-    XHTML("XHTML"), CSS("CSS");
+    HTML("HTML"), CSS("CSS");
 
     private final String name;
 

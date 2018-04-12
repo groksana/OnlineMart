@@ -16,7 +16,7 @@ public class ThymeLeafPageGenerator {
 
     private static final String CSS_FILE_EXTENSION = ".css";
 
-    private static final String HTML_TEMPLATE_MODE = "XHTML";
+    private static final String HTML_TEMPLATE_MODE = "HTML";
 
     private static final String CSS_TEMPLATE_MODE = "CSS";
 
