@@ -20,12 +20,14 @@ import java.util.*;
 
 import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
 import static com.gromoks.onlinemart.web.util.PasswordEncryption.encryptPassword;
+import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class LoginServlet extends HttpServlet {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private UserService userService;
     private SessionStore sessionStore;
+    private String errorMessage;
 
     public LoginServlet(UserService userService, SessionStore sessionStore) {
         this.userService = userService;
@@ -36,9 +38,13 @@ public class LoginServlet extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
-        ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
+        String addProductState = checkAddProductState(req, sessionStore);
 
-        String page = thymeLeafPageGenerator.getPage("login", HTML);
+        ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
+        Map<String, Object> map = new HashMap<>();
+        map.put("message", errorMessage);
+        map.put("addProductState", addProductState);
+        String page = thymeLeafPageGenerator.getPage("login", HTML, map);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);
@@ -49,9 +55,10 @@ public class LoginServlet extends HttpServlet {
         String login = req.getParameter("login");
         String password = encryptPassword(req.getParameter("password"));
 
-        User user = userService.getUserByEmailAndPassword(login, password);
+        Optional<User> optionalUser = userService.getUserByEmailAndPassword(login, password);
 
-        if (user != null) {
+        if (optionalUser.isPresent()) {
+            User user = optionalUser.get();
             String token = UUID.randomUUID().toString();
             Cookie cookie = new Cookie("security-token", token);
             cookie.setMaxAge(10000);
@@ -68,6 +75,8 @@ public class LoginServlet extends HttpServlet {
             log.info("User token {} for user {} has been set", token, user);
         } else {
             resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            errorMessage = "Login or password are incorrect. Please try again";
+            resp.sendRedirect("/login");
             log.error("Login or password are incorrect for {}", login);
         }
     }

@@ -12,6 +12,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class JdbcUserDao implements UserDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -26,7 +27,7 @@ public class JdbcUserDao implements UserDao {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String login, String password) {
+    public Optional<User> getUserByEmailAndPassword(String login, String password) {
         log.info("Start query to get user by email and password from db");
         long startTime = System.currentTimeMillis();
 
@@ -37,9 +38,9 @@ public class JdbcUserDao implements UserDao {
             preparedStatement.setString(2, password);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            User user = new User();
+            Optional<User> user = Optional.empty();
             while (resultSet.next()) {
-                user = userRowMapper.mapRow(resultSet);
+                user = Optional.ofNullable(userRowMapper.mapRow(resultSet));
             }
 
             log.info("Finish query to get user by email and password from DB. It took {} ms", System.currentTimeMillis() - startTime);

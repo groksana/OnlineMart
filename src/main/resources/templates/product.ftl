@@ -32,7 +32,7 @@
                 <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Add Product</a>
+                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/product/1' : null">Add Product</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">

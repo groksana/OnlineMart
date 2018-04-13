@@ -5,6 +5,8 @@ import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
+import java.util.Map;
+
 import static com.gromoks.onlinemart.web.entity.TemplateMode.getByName;
 
 public class ThymeLeafPageGenerator {
@@ -35,18 +37,6 @@ public class ThymeLeafPageGenerator {
         return thymeLeafPageGenerator;
     }
 
-    public String getPage(String filename, TemplateMode templateMode, String variableName, Object object) {
-        initResolver(templateMode);
-
-        TemplateEngine engine = new TemplateEngine();
-        engine.setTemplateResolver(resolver);
-
-        Context context = new Context();
-        context.setVariable(variableName, object);
-
-        return engine.process(filename, context);
-    }
-
     public String getPage(String filename, TemplateMode templateMode) {
         initResolver(templateMode);
 
@@ -54,6 +44,21 @@ public class ThymeLeafPageGenerator {
         engine.setTemplateResolver(resolver);
 
         return engine.process(filename, new Context());
+    }
+
+    public String getPage(String filename, TemplateMode templateMode, Map<String, Object> map) {
+        initResolver(templateMode);
+
+        TemplateEngine engine = new TemplateEngine();
+        engine.setTemplateResolver(resolver);
+
+        Context context = new Context();
+
+        for (Map.Entry<String, Object> element : map.entrySet()) {
+            context.setVariable(element.getKey(), element.getValue());
+        }
+
+        return engine.process(filename, context);
     }
 
     private ThymeLeafPageGenerator() {

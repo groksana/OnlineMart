@@ -3,6 +3,7 @@ package com.gromoks.onlinemart.security;
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.entity.Session;
+import com.gromoks.onlinemart.security.entity.UserRole;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

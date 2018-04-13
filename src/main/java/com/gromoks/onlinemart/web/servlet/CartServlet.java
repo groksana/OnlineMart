@@ -10,7 +10,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
 import static com.gromoks.onlinemart.web.util.RequestParser.*;
@@ -29,8 +31,13 @@ public class CartServlet extends HttpServlet {
         String token = getSecurityToken(req, sessionStore);
 
         List<Product> productCart = sessionStore.getCartByToken(token);
+        String addProductState = checkAddProductState(req, sessionStore);
+
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
-        String page = thymeLeafPageGenerator.getPage("cart", HTML, "cart", productCart);
+        Map<String, Object> map = new HashMap<>();
+        map.put("cart", productCart);
+        map.put("addProductState", addProductState);
+        String page = thymeLeafPageGenerator.getPage("cart", HTML, map);
         writer.write(page);
         resp.setStatus(HttpServletResponse.SC_OK);
     }

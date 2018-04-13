@@ -4,6 +4,8 @@ import com.gromoks.onlinemart.dao.UserDao;
 import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.service.UserService;
 
+import java.util.Optional;
+
 public class UserServiceImpl implements UserService {
     private UserDao userDao;
 
@@ -12,7 +14,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User getUserByEmailAndPassword(String login, String password) {
+    public Optional<User> getUserByEmailAndPassword(String login, String password) {
         return userDao.getUserByEmailAndPassword(login, password);
     }
 }

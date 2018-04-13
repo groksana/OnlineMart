@@ -34,8 +34,8 @@ public class Starter {
         UserService userService = new UserServiceImpl(jdbcUserDao);
 
         // servlet
-        ProductsServlet productsServlet = new ProductsServlet(productService);
-        ProductServlet productServlet = new ProductServlet(productService);
+        ProductsServlet productsServlet = new ProductsServlet(productService, sessionStore);
+        ProductServlet productServlet = new ProductServlet(productService, sessionStore);
         CartAddServlet cartAddServlet = new CartAddServlet(productService, sessionStore);
         CartServlet cartServlet = new CartServlet(sessionStore);
         AssetsServlet assetsServlet = new AssetsServlet();

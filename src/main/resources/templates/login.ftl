@@ -33,7 +33,7 @@
                 <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a class="nav-link disabled" href="#">Add Product</a>
+                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/product/1' : null">Add Product</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -58,6 +58,7 @@
     <input type="text" name="login" id="login" class="form-control" placeholder="login" required autofocus>
     <label for="password" class="sr-only">Password</label>
     <input type="password" name="password" id="password" class="form-control" placeholder="password" required>
+    <h6 th:text="${message}">Message</h6>
     <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">Sign in</button>
 </form>
 

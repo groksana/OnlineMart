@@ -1,9 +1,11 @@
 package com.gromoks.onlinemart.entity;
 
+import com.gromoks.onlinemart.security.entity.UserRole;
+
 public class User {
     private String login;
     private String password;
-    private String role;
+    private UserRole role;
 
     public User() {
     }
@@ -29,11 +31,11 @@ public class User {
         this.password = password;
     }
 
-    public String getRole() {
+    public UserRole getRole() {
         return role;
     }
 
-    public void setRole(String role) {
+    public void setRole(UserRole role) {
         this.role = role;
     }
 
@@ -42,7 +44,7 @@ public class User {
         return "User{" +
                 "login='" + login + '\'' +
                 ", password='" + password + '\'' +
-                ", role='" + role + '\'' +
+                ", role=" + role +
                 '}';
     }
 }

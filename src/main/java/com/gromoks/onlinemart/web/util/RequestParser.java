@@ -1,9 +1,12 @@
 package com.gromoks.onlinemart.web.util;
 
+import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.security.entity.UserRole;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
+import java.util.Optional;
 
 public class RequestParser {
     public static String getSecurityToken(HttpServletRequest httpServletRequest, SessionStore sessionStore) {
@@ -21,5 +24,24 @@ public class RequestParser {
             }
         }
         return token;
+    }
+
+    public static String checkAddProductState(HttpServletRequest httpServletRequest, SessionStore sessionStore) {
+        String token = getSecurityToken(httpServletRequest, sessionStore);
+        Optional<User> user = Optional.ofNullable(sessionStore.getUserByToken(token));
+
+        UserRole userRole = UserRole.GUEST;
+        if (user.isPresent()) {
+            userRole = user.get().getRole();
+        }
+
+        String addProductState;
+
+        if (userRole == UserRole.ADMIN) {
+            addProductState = "active";
+        } else {
+            addProductState = "disabled";
+        }
+        return addProductState;
     }
 }
