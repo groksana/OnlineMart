@@ -17,10 +17,22 @@ import static java.time.LocalDateTime.*;
 public class SessionStore {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private List<Session> sessionList = new CopyOnWriteArrayList<>();
+    private List<Session> sessionList = new ArrayList<>();
 
     public void addSession(Session session) {
         sessionList.add(session);
+    }
+
+    public void removeSessionByToken(String token) {
+        log.info("Start to remove session by user token = {}", token);
+        Iterator<Session> iterator = sessionList.iterator();
+        while (iterator.hasNext()) {
+            Session session = iterator.next();
+            if (session.getToken().equals(token)) {
+                iterator.remove();
+            }
+        }
+        log.info("Finish to remove session by user token");
     }
 
     public boolean isValid(String token) {

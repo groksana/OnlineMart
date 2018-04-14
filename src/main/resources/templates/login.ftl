@@ -33,12 +33,12 @@
                 <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/product/1' : null">Add Product</a>
+                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
-                <a class="nav-link" href="#"><span class="fa fa-user"></span>Your Account</a>
+                <a class="nav-link" href="/user"><span class="fa fa-user"></span>Your Account</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="/cart"><span class="fa fa-shopping-cart"></span>Cart</a>

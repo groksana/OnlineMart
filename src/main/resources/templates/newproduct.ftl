@@ -1,12 +1,12 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Products</title>
+    <title>Product</title>
 
     <!-- Bootstrap core CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
@@ -32,13 +32,10 @@
                 <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
+                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'"
+                   th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
             </li>
         </ul>
-        <form class="form-inline mx-auto">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-        </form>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
                 <a class="nav-link" href="/user"><span class="fa fa-user"></span>Your Account</a>
@@ -56,22 +53,32 @@
     <div class="jumbotron clearfix">
     </div>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4" th:each="product : ${products}">
-                <div class="boximg">
-                    <img th:src=${product.picturePath}
-                                 width="180" height="236">
-                </div>
-                <h2 th:text="${product.name}">Name</h2>
-                <p th:text="'Price : $' + ${product.price}">Price</p>
-                <p><a class="btn btn-secondary" th:href="'/product/' + ${product.id}" role="button">View details
-                    &raquo;</a></p>
+    <form action="/newproduct" method="POST">
+        <h4>Please add information by new product</h4>
+        <div class="form-group row">
+            <label for="product-input" class="col-2 col-form-label">Product Name</label>
+            <div class="col-10">
+                <input class="form-control" type="text" name="name" value="" placeholder="name" id="product-input">
             </div>
         </div>
-        <hr>
-    </div>
-
+        <div class="form-group row">
+            <label for="image-input" class="col-2 col-form-label">Image Path</label>
+            <div class="col-10">
+                <input class="form-control" type="text" name="image" value="" placeholder="image" id="image-input">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="price-input" class="col-2 col-form-label">Price</label>
+            <div class="col-10">
+                <input class="form-control" type="text" name="price" value="" placeholder="price" id="price-input">
+            </div>
+        </div>
+        <div class="form-group row">
+            <label for="description-input" class="col-2 col-form-label">Description</label>
+            <textarea class="form-control" name="description" placeholder="description" id="description-input" rows="3"></textarea>
+        </div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">ADD</button>
+    </form>
 </main>
 
 <div class="navbar-fixed-bottom row-fluid">
