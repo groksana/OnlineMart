@@ -20,7 +20,6 @@ public class ProductsServlet extends HttpServlet {
 
     private ProductService productService;
     private SessionStore sessionStore;
-    private List<Product> productList = new ArrayList<>();
 
     public ProductsServlet(ProductService productService, SessionStore sessionStore) {
         this.productService = productService;
@@ -28,14 +27,10 @@ public class ProductsServlet extends HttpServlet {
     }
 
     @Override
-    public void init() throws ServletException {
-        productList = productService.getAll();
-    }
-
-    @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
+        List<Product> productList = productService.getAll();
         String addProductState = checkAddProductState(req, sessionStore);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();

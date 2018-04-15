@@ -22,4 +22,14 @@ public class ProductServiceImpl implements ProductService {
     public Product getById(int productId) {
         return jdbcProductDao.getById(productId);
     }
+
+    @Override
+    public int add(Product product) {
+        return jdbcProductDao.add(product);
+    }
+
+    @Override
+    public List<Product> search(String keyWord) {
+        return jdbcProductDao.search(keyWord);
+    }
 }

@@ -29,8 +29,6 @@ public class ProductServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        PrintWriter writer = resp.getWriter();
-
         String[] uris=req.getRequestURI().split("/");
         int productId = Integer.valueOf(uris[2]);
 
@@ -42,6 +40,8 @@ public class ProductServlet extends HttpServlet {
         map.put("product", product);
         map.put("addProductState", addProductState);
         String page = thymeLeafPageGenerator.getPage("product", HTML, map);
+        resp.setCharacterEncoding( "UTF-8" );
+        PrintWriter writer = resp.getWriter();
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

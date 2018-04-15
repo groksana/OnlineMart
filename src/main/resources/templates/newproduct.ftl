@@ -77,6 +77,7 @@
             <label for="description-input" class="col-2 col-form-label">Description</label>
             <textarea class="form-control" name="description" placeholder="description" id="description-input" rows="3"></textarea>
         </div>
+        <h6 th:text="${message}">Message</h6>
         <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">ADD</button>
     </form>
 </main>

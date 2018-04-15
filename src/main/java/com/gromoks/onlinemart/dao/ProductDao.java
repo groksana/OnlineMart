@@ -8,4 +8,8 @@ public interface ProductDao {
     List<Product> getAll();
 
     Product getById(int productId);
+
+    int add(Product product);
+
+    List<Product> search(String keyWord);
 }

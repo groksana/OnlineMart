@@ -22,6 +22,10 @@ public class JdbcProductDao implements ProductDao {
 
     private static final String GET_PRODUCT_BY_ID_SQL = "SELECT ID, NAME, PRICE, PICTUREPATH, DESCRIPTION FROM PRODUCT WHERE ID = ?";
 
+    private static final String ADD_PRODUCT_SQL = "INSERT INTO PRODUCT(NAME, PRICE, PICTUREPATH, DESCRIPTION) VALUES(?, ?, ?, ?)";
+
+    private static final String SEARCH_PRODUCT_BY_KEY_WORD = "SELECT ID, NAME, PRICE, PICTUREPATH, DESCRIPTION FROM PRODUCT WHERE NAME LIKE ?";
+
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
     private MyDataSource myDataSource;
@@ -71,6 +75,55 @@ public class JdbcProductDao implements ProductDao {
 
             log.info("Finish query to get product by id from DB. It took {} ms", System.currentTimeMillis() - startTime);
             return product;
+        } catch (SQLException e) {
+            log.error("Connection can't be established ", e);
+            throw new ConnectionException("Connection can't be established ", e);
+        }
+    }
+
+    @Override
+    public int add(Product product) {
+        log.info("Start query to add product {}", product);
+
+        try (Connection connection = myDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            preparedStatement.setString(1, product.getName());
+            preparedStatement.setDouble(2, product.getPrice());
+            preparedStatement.setString(3, product.getPicturePath());
+            preparedStatement.setString(4, product.getDescription());
+            preparedStatement.executeUpdate();
+
+            ResultSet resultSet = preparedStatement.getGeneratedKeys();
+            int key = resultSet.next() ? resultSet.getInt(1) : 0;
+            resultSet.close();
+
+            log.info("Finish query to add product");
+            return key;
+        } catch (SQLException e) {
+            log.error("Connection can't be established ", e);
+            throw new ConnectionException("Connection can't be established ", e);
+        }
+    }
+
+    @Override
+    public List<Product> search(String keyWord) {
+        log.info("Start query to search product from DB by keyWord = {}", keyWord);
+        long startTime = System.currentTimeMillis();
+
+        try (Connection connection = myDataSource.getConnection();
+             PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_SQL)) {
+
+            preparedStatement.setString(1, "%" + keyWord + "%");
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            List<Product> products = new ArrayList<>();
+            while (resultSet.next()) {
+                Product product = productRowMapper.mapRow(resultSet);
+                products.add(product);
+            }
+
+            log.info("Finish query to search product from DB by keyWord. It took {} ms", System.currentTimeMillis() - startTime);
+            return products;
         } catch (SQLException e) {
             log.error("Connection can't be established ", e);
             throw new ConnectionException("Connection can't be established ", e);
