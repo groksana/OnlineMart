@@ -111,10 +111,11 @@ public class JdbcProductDao implements ProductDao {
         long startTime = System.currentTimeMillis();
 
         try (Connection connection = myDataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_SQL)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_PRODUCT_BY_KEY_WORD)) {
 
             preparedStatement.setString(1, "%" + keyWord + "%");
             ResultSet resultSet = preparedStatement.executeQuery();
+            log.info("Final statement {}", preparedStatement);
 
             List<Product> products = new ArrayList<>();
             while (resultSet.next()) {

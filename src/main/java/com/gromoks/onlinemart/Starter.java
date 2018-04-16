@@ -38,6 +38,7 @@ public class Starter {
         ProductsServlet productsServlet = new ProductsServlet(productService, sessionStore);
         ProductServlet productServlet = new ProductServlet(productService, sessionStore);
         NewProductServlet newProductServlet = new NewProductServlet(productService, sessionStore);
+        ProductSearchServlet productSearchServlet = new ProductSearchServlet(productService, sessionStore);
         CartAddServlet cartAddServlet = new CartAddServlet(productService, sessionStore);
         CartServlet cartServlet = new CartServlet(sessionStore);
         UserServlet userServlet = new UserServlet(sessionStore);
@@ -53,6 +54,7 @@ public class Starter {
 
         // server
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
+        context.addServlet(new ServletHolder(productSearchServlet), "/products/search");
         context.addServlet(new ServletHolder(productsServlet), "/products");
         context.addServlet(new ServletHolder(loginServlet), "/login");
         context.addServlet(new ServletHolder(logoutServlet), "/logout");

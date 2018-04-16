@@ -35,10 +35,16 @@
                 <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
             </li>
         </ul>
-        <form class="form-inline mx-auto">
-            <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <form class="form-inline mx-auto" action="/products/search">
+            <input class="form-control mr-sm-2" type="text" id="searchtext" name="name" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit" onclick="myFunction()">Search</button>
         </form>
+        <script> function myFunction()
+        {
+            var search = document.getElementById("searchtext").value;
+            window.location = '/products/search?name='+search;
+        }
+        </script>
         <ul class="nav navbar-nav navbar-right">
             <li class="nav-item">
                 <a class="nav-link" href="/user"><span class="fa fa-user"></span>Your Account</a>
