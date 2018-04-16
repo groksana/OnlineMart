@@ -53,33 +53,53 @@
     <div class="jumbotron clearfix">
     </div>
 
-    <form action="/newproduct" method="POST">
-        <h4>Please add information by new product</h4>
-        <div class="form-group row">
-            <label for="product-input" class="col-2 col-form-label">Product Name</label>
-            <div class="col-10">
-                <input class="form-control" type="text" name="name" value="" placeholder="name" id="product-input">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="image-input" class="col-2 col-form-label">Image Path</label>
-            <div class="col-10">
-                <input class="form-control" type="text" name="image" value="" placeholder="image" id="image-input">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="price-input" class="col-2 col-form-label">Price</label>
-            <div class="col-10">
-                <input class="form-control" type="text" name="price" value="" placeholder="price" id="price-input">
-            </div>
-        </div>
-        <div class="form-group row">
-            <label for="description-input" class="col-2 col-form-label">Description</label>
-            <textarea class="form-control" name="description" placeholder="description" id="description-input" rows="3"></textarea>
-        </div>
-        <h6 th:text="${message}">Message</h6>
-        <button class="btn btn-lg btn-primary btn-block" type="submit" name="ok">ADD</button>
-    </form>
+    <div class="container">
+        <form action="/newproduct" method="POST">
+            <fieldset>
+                <!--<legend>Please add information by new product</legend>-->
+                <h4 class="heading"><strong>New </strong> Product <span></span></h4>
+                <hr>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label" for="product-input">Product Name</label>
+                    <div class="col-sm-9">
+                        <input type="text" class="form-control" name="name" id="product-input"
+                               placeholder="Input Product Name">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="image-input" class="col-sm-3 control-label">Image Path</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" name="image" value="" placeholder="Input Image Path"
+                               id="image-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="price-input" class="col-sm-3 control-label">Price</label>
+                    <div class="col-sm-9">
+                        <input class="form-control" type="text" name="price" value="" placeholder="Input Price"
+                               id="price-input">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="description-input" class="col-sm-3 control-label">Description</label>
+                    <div class="col-sm-9">
+                    <textarea class="form-control" name="description" placeholder="Input Description" id="description-input"
+                              rows="3"></textarea>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-9">
+                        <h6 style="color: red" th:text="${message}">Message</h6>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-sm-offset-3 col-sm-9">
+                        <button type="submit" class="btn btn-success" name="ok">Add Product</button>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
 </main>
 
 <div class="navbar-fixed-bottom row-fluid">
