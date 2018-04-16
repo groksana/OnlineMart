@@ -56,6 +56,7 @@
     <div class="container">
         <form action="/newproduct" method="POST">
             <fieldset>
+                <div class="form_main">
                 <!--<legend>Please add information by new product</legend>-->
                 <h4 class="heading"><strong>New </strong> Product <span></span></h4>
                 <hr>
@@ -83,7 +84,8 @@
                 <div class="form-group">
                     <label for="description-input" class="col-sm-3 control-label">Description</label>
                     <div class="col-sm-9">
-                    <textarea class="form-control" name="description" placeholder="Input Description" id="description-input"
+                    <textarea class="form-control" name="description" placeholder="Input Description"
+                              id="description-input"
                               rows="3"></textarea>
                     </div>
                 </div>
@@ -94,11 +96,13 @@
                 </div>
                 <div class="form-group">
                     <div class="col-sm-offset-3 col-sm-9">
-                        <button type="submit" class="btn btn-success" name="ok">Add Product</button>
+                        <button type="submit" class="btn btn-primary btn-md" name="ok">Add Product</button>
                     </div>
+                </div>
                 </div>
             </fieldset>
         </form>
+        <hr>
     </div>
 </main>
 

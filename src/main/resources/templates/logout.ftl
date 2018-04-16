@@ -50,10 +50,17 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron clearfix">
-        <div class="container">
-            <h3 class="display-3">You has been successfully logged out</h3>
-            <p><a class="btn btn-primary btn-lg" href="/products" role="button">Back To Products &raquo;</a>
-            </p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
+                <div class="container">
+                    <h2>You has been successfully logged out</h2>
+                </div>
+                <div class="col-sm-5 col-xs-6 tital ">
+                    <p><a class="btn btn-primary btn-md" href="/products" role="button">Back To Products</a></p>
+                </div>
+            </div>
         </div>
     </div>
 </main>

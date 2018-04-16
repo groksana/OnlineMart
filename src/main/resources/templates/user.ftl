@@ -32,7 +32,8 @@
                 <a class="nav-link" href="/products">Products <span class="sr-only">(current)</span></a>
             </li>
             <li class="nav-item">
-                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'" th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
+                <a th:class="${addProductState == 'disabled'} ? 'nav-link disabled' : 'nav-link'"
+                   th:href="${addProductState == 'active'} ? '/newproduct' : null">Add Product</a>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
@@ -50,11 +51,24 @@
 
     <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron clearfix">
-        <div class="container">
-            <h2 class="display-3" th:text="'Hello, ' + ${user.nickname} + '!'">Hello</h2>
-            <p><a class="btn btn-primary btn-lg" href="/products" role="button">Back To Products &raquo;</a>
-                <a class="btn btn-primary btn-lg" href="/logout" role="button">LogOut &raquo;</a>
-            </p>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 col-xs-12 col-sm-6 col-lg-8">
+                <div class="container">
+                    <h2 th:text="${user.nickname}">User</h2>
+                    <p>an <b th:text="${user.role}"> Employee</b></p>
+                </div>
+                <hr>
+                <ul class="container details">
+                    <li><p><span class="fa fa-envelope one" style="width:50px;"></span><i th:text="${user.login}">User</i>
+                    </p></li>
+                </ul>
+                <hr>
+                <div class="col-sm-5 col-xs-6 tital ">
+                    <a class="btn btn-primary btn-md" href="/products" role="button">Back To Products</a>   <a class="btn btn-primary btn-md" href="/logout" role="button">LogOut</a>
+                </div>
+            </div>
         </div>
     </div>
 </main>
