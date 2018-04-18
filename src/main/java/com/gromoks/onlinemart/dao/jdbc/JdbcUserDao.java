@@ -17,7 +17,7 @@ import java.util.Optional;
 public class JdbcUserDao implements UserDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final String GET_USER = " SELECT NICKNAME, EMAIL, ROLE FROM USER WHERE email = ? and password = ?";
+    private static final String GET_USER = " SELECT NICKNAME, EMAIL, ROLE FROM USERS WHERE email = ? and password = ?";
 
     private final UserRowMapper userRowMapper = new UserRowMapper();
     private MyDataSource myDataSource;

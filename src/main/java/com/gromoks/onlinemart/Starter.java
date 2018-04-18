@@ -25,6 +25,8 @@ import java.util.EnumSet;
 
 public class Starter {
 
+    public static String PORT = System.getenv("PORT");
+
     public static void main(String[] args) throws Exception {
         // common
         SessionStore sessionStore = new SessionStore();
@@ -70,7 +72,7 @@ public class Starter {
         context.addFilter(new FilterHolder(securityFilter), "/newproduct/*", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(mdcFilter), "/*", EnumSet.of(DispatcherType.REQUEST));
 
-        Server server = new Server(8080);
+        Server server = new Server(Integer.parseInt(PORT));
         server.setHandler(context);
 
         server.start();
