@@ -1,1 +1,0 @@
-web: java -jar target/onlinemart-1.0-SNAPSHOT.jar
