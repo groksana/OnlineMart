@@ -8,6 +8,8 @@ import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -29,9 +31,14 @@ public class MyDataSource implements DataSource{
             throw new FileLoadException("File database.properties can't be loaded: ", e);
         }
 
-        url = properties.getProperty("onlinemart.jdbc.url");
-        username = properties.getProperty("onlinemart.jdbc.username");
-        password = properties.getProperty("onlinemart.jdbc.password");
+        try {
+            Class.forName("org.postgresql.Driver");
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        url = System.getenv("JDBC_DATABASE_URL");
+        username = System.getenv("JDBC_DATABASE_USERNAME");
+        password = System.getenv("JDBC_DATABASE_PASSWORD");
     }
 
     public Connection getConnection() throws SQLException {
