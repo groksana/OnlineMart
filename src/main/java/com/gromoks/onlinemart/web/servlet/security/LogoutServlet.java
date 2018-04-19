@@ -1,9 +1,6 @@
 package com.gromoks.onlinemart.web.servlet.security;
 
-import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.SessionStore;
-import com.gromoks.onlinemart.security.entity.Session;
-import com.gromoks.onlinemart.service.UserService;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,14 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.UUID;
 
 import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
-import static com.gromoks.onlinemart.web.util.PasswordEncryption.encryptPassword;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class LogoutServlet extends HttpServlet {
