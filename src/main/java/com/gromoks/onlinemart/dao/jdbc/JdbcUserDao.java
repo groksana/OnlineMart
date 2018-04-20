@@ -1,10 +1,9 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
 import com.gromoks.onlinemart.dao.UserDao;
-import com.gromoks.onlinemart.dao.config.MyDataSource;
-import com.gromoks.onlinemart.dao.mapper.UserRowMapper;
+import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
+import com.gromoks.onlinemart.dao.jdbc.mapper.UserRowMapper;
 import com.gromoks.onlinemart.entity.User;
-import com.gromoks.onlinemart.exception.ConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -20,10 +19,10 @@ public class JdbcUserDao implements UserDao {
     private static final String GET_USER = " SELECT NICKNAME, EMAIL, ROLE FROM USERS WHERE email = ? and password = ?";
 
     private final UserRowMapper userRowMapper = new UserRowMapper();
-    private MyDataSource myDataSource;
+    private DataSource dataSource;
 
-    public JdbcUserDao(MyDataSource myDataSource) {
-        this.myDataSource = myDataSource;
+    public JdbcUserDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -31,7 +30,7 @@ public class JdbcUserDao implements UserDao {
         log.info("Start query to get user by email and password from db");
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = myDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
 
             preparedStatement.setString(1, login);
@@ -39,15 +38,18 @@ public class JdbcUserDao implements UserDao {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             Optional<User> user = Optional.empty();
-            while (resultSet.next()) {
-                user = Optional.ofNullable(userRowMapper.mapRow(resultSet));
+            if (resultSet.next()) {
+                user = Optional.of(userRowMapper.mapRow(resultSet));
+            } else if (resultSet.next()) {
+                log.error("Constraint violation. We can't have several users per email");
+                throw new RuntimeException("Constraint violation. We can't have several users per email");
             }
 
             log.info("Finish query to get user by email and password from DB. It took {} ms", System.currentTimeMillis() - startTime);
             return user;
         } catch (SQLException e) {
-            log.error("Connection can't be established ", e);
-            throw new ConnectionException("Connection can't be established ", e);
+            log.error("Issue during extract user by email and password ", e);
+            throw new RuntimeException("Issue during extract user by email and password ", e);
         }
 
     }

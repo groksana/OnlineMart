@@ -1,4 +1,4 @@
-package com.gromoks.onlinemart.dao.mapper;
+package com.gromoks.onlinemart.dao.jdbc.mapper;
 
 import com.gromoks.onlinemart.entity.User;
 

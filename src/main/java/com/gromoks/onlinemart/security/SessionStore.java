@@ -34,21 +34,21 @@ public class SessionStore {
     }
 
     public boolean isValid(String token) {
-        log.info("Start to check by user token = {}", token);
+        log.info("Start to validate user token = {}", token);
 
         Iterator<Session> iterator = sessionList.iterator();
         while (iterator.hasNext()) {
             Session session = iterator.next();
             if (session.getToken().equals(token)) {
-                if ((now().getSecond() - session.getExpireTime().getSecond()) < 10000) {
-                    return true;
-                } else {
+                if (now().isAfter(session.getExpireTime())) {
                     iterator.remove();
+                } else {
+                    return true;
                 }
             }
         }
 
-        log.info("Finish to check by user token");
+        log.info("Validation of user token has been finished");
         return false;
     }
 

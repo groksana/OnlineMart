@@ -2,7 +2,7 @@ package com.gromoks.onlinemart;
 
 import com.gromoks.onlinemart.dao.ProductDao;
 import com.gromoks.onlinemart.dao.UserDao;
-import com.gromoks.onlinemart.dao.config.MyDataSource;
+import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
 import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
 import com.gromoks.onlinemart.dao.jdbc.JdbcUserDao;
 import com.gromoks.onlinemart.service.ProductService;
@@ -30,9 +30,9 @@ public class Starter {
     public static void main(String[] args) throws Exception {
         // common
         SessionStore sessionStore = new SessionStore();
-        MyDataSource myDataSource = new MyDataSource();
-        ProductDao jdbcProductDao = new JdbcProductDao(myDataSource);
-        UserDao jdbcUserDao = new JdbcUserDao(myDataSource);
+        DataSource dataSource = new DataSource();
+        ProductDao jdbcProductDao = new JdbcProductDao(dataSource);
+        UserDao jdbcUserDao = new JdbcUserDao(dataSource);
         ProductService productService = new ProductServiceImpl(jdbcProductDao);
         UserService userService = new UserServiceImpl(jdbcUserDao);
 

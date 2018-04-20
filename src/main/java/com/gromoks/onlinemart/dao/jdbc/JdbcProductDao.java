@@ -1,10 +1,9 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
 import com.gromoks.onlinemart.dao.ProductDao;
-import com.gromoks.onlinemart.dao.config.MyDataSource;
-import com.gromoks.onlinemart.dao.mapper.ProductRowMapper;
+import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
+import com.gromoks.onlinemart.dao.jdbc.mapper.ProductRowMapper;
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.exception.ConnectionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,10 +27,10 @@ public class JdbcProductDao implements ProductDao {
 
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
-    private MyDataSource myDataSource;
+    private DataSource dataSource;
 
-    public JdbcProductDao(MyDataSource myDataSource) {
-        this.myDataSource = myDataSource;
+    public JdbcProductDao(DataSource dataSource) {
+        this.dataSource = dataSource;
     }
 
     @Override
@@ -39,7 +38,7 @@ public class JdbcProductDao implements ProductDao {
         log.info("Start query to get all product from DB");
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = myDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_PRODUCT_SQL);
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
@@ -52,8 +51,8 @@ public class JdbcProductDao implements ProductDao {
             log.info("Finish query to get all product from DB. It took {} ms", System.currentTimeMillis() - startTime);
             return products;
         } catch (SQLException e) {
-            log.error("Connection can't be established ", e);
-            throw new ConnectionException("Connection can't be established ", e);
+            log.error("Issue during extract all product from db ", e);
+            throw new RuntimeException("Issue during extract all product from db ", e);
         }
     }
 
@@ -62,22 +61,25 @@ public class JdbcProductDao implements ProductDao {
         log.info("Start query to get product from DB by id = {}", productId);
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = myDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(GET_PRODUCT_BY_ID_SQL)) {
 
             preparedStatement.setInt(1, productId);
             ResultSet resultSet = preparedStatement.executeQuery();
 
             Product product = new Product();
-            while (resultSet.next()) {
+            if (resultSet.next()) {
                 product = productRowMapper.mapRow(resultSet);
+            } else if (resultSet.next()) {
+                log.error("Constraint violation. We can't have several products per one id");
+                throw new RuntimeException("Constraint violation. We can't have several products per one id");
             }
 
             log.info("Finish query to get product by id from DB. It took {} ms", System.currentTimeMillis() - startTime);
             return product;
         } catch (SQLException e) {
-            log.error("Connection can't be established ", e);
-            throw new ConnectionException("Connection can't be established ", e);
+            log.error("Issue during extract product by id from db ", e);
+            throw new RuntimeException("Issue during extract product by id from db ", e);
         }
     }
 
@@ -85,7 +87,7 @@ public class JdbcProductDao implements ProductDao {
     public int add(Product product) {
         log.info("Start query to add product {}", product);
 
-        try (Connection connection = myDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(ADD_PRODUCT_SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
             preparedStatement.setString(1, product.getName());
             preparedStatement.setDouble(2, product.getPrice());
@@ -95,13 +97,12 @@ public class JdbcProductDao implements ProductDao {
 
             ResultSet resultSet = preparedStatement.getGeneratedKeys();
             int key = resultSet.next() ? resultSet.getInt(1) : 0;
-            resultSet.close();
 
             log.info("Finish query to add product");
             return key;
         } catch (SQLException e) {
-            log.error("Connection can't be established ", e);
-            throw new ConnectionException("Connection can't be established ", e);
+            log.error("Issue during product insert to db ", e);
+            throw new RuntimeException("Issue during product insert to db ", e);
         }
     }
 
@@ -110,7 +111,7 @@ public class JdbcProductDao implements ProductDao {
         log.info("Start query to search product from DB by keyWord = {}", keyWord);
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = myDataSource.getConnection();
+        try (Connection connection = dataSource.getConnection();
              PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_PRODUCT_BY_KEY_WORD)) {
 
             preparedStatement.setString(1, "%" + keyWord + "%");
@@ -126,8 +127,8 @@ public class JdbcProductDao implements ProductDao {
             log.info("Finish query to search product from DB by keyWord. It took {} ms", System.currentTimeMillis() - startTime);
             return products;
         } catch (SQLException e) {
-            log.error("Connection can't be established ", e);
-            throw new ConnectionException("Connection can't be established ", e);
+            log.error("Issue during search product by key word from db ", e);
+            throw new RuntimeException("Issue during search product by key word from db ", e);
         }
     }
 }
