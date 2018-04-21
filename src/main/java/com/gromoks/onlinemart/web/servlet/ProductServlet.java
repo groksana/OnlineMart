@@ -14,7 +14,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class ProductServlet extends HttpServlet {
@@ -39,7 +38,7 @@ public class ProductServlet extends HttpServlet {
         Map<String, Object> map = new HashMap<>();
         map.put("product", product);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("product", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("product", map);
         resp.setCharacterEncoding( "UTF-8" );
         PrintWriter writer = resp.getWriter();
         writer.write(page);

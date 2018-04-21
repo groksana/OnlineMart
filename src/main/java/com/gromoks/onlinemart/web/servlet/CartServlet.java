@@ -14,7 +14,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
 import static com.gromoks.onlinemart.web.util.RequestParser.*;
 
 public class CartServlet extends HttpServlet {
@@ -37,7 +36,7 @@ public class CartServlet extends HttpServlet {
         Map<String, Object> map = new HashMap<>();
         map.put("cart", productCart);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("cart", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("cart", map);
         writer.write(page);
         resp.setStatus(HttpServletResponse.SC_OK);
     }

@@ -7,6 +7,8 @@ import org.thymeleaf.templateresolver.ClassLoaderTemplateResolver;
 
 import java.util.Map;
 
+import static com.gromoks.onlinemart.web.entity.TemplateMode.CSS;
+import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 import static com.gromoks.onlinemart.web.entity.TemplateMode.getByName;
 
 public class ThymeLeafPageGenerator {
@@ -14,7 +16,7 @@ public class ThymeLeafPageGenerator {
 
     private static final String CSS_DIR = "templates/css/";
 
-    private static final String HTML_FILE_EXTENSION = ".ftl";
+    private static final String HTML_FILE_EXTENSION = ".html";
 
     private static final String CSS_FILE_EXTENSION = ".css";
 
@@ -22,7 +24,13 @@ public class ThymeLeafPageGenerator {
 
     private static final String CSS_TEMPLATE_MODE = "CSS";
 
-    private final ClassLoaderTemplateResolver resolver;
+    private final ClassLoaderTemplateResolver htmlResolver;
+
+    private final ClassLoaderTemplateResolver cssResolver;
+
+    private final TemplateEngine htmlEngine;
+
+    private final TemplateEngine cssEngine;
 
     private static volatile ThymeLeafPageGenerator thymeLeafPageGenerator;
 
@@ -37,43 +45,41 @@ public class ThymeLeafPageGenerator {
         return thymeLeafPageGenerator;
     }
 
-    public String getPage(String filename, TemplateMode templateMode) {
-        initResolver(templateMode);
-
-        TemplateEngine engine = new TemplateEngine();
-        engine.setTemplateResolver(resolver);
-
-        return engine.process(filename, new Context());
-    }
-
-    public String getPage(String filename, TemplateMode templateMode, Map<String, Object> map) {
-        initResolver(templateMode);
-
-        TemplateEngine engine = new TemplateEngine();
-        engine.setTemplateResolver(resolver);
-
+    public String getHtmlPage(String filename, Map<String, Object> map) {
         Context context = new Context();
 
         for (Map.Entry<String, Object> element : map.entrySet()) {
             context.setVariable(element.getKey(), element.getValue());
         }
 
-        return engine.process(filename, context);
+        return htmlEngine.process(filename, context);
+    }
+
+    public String getCssPage(String filename) {
+        return cssEngine.process(filename, new Context());
     }
 
     private ThymeLeafPageGenerator() {
-        resolver = new ClassLoaderTemplateResolver();
+        htmlResolver = new ClassLoaderTemplateResolver();
+        initResolver(HTML);
+        htmlEngine = new TemplateEngine();
+        htmlEngine.setTemplateResolver(htmlResolver);
+
+        cssResolver = new ClassLoaderTemplateResolver();
+        initResolver(CSS);
+        cssEngine = new TemplateEngine();
+        cssEngine.setTemplateResolver(cssResolver);
     }
 
     private void initResolver(TemplateMode templateMode) {
         if (templateMode == getByName(HTML_TEMPLATE_MODE)) {
-            resolver.setTemplateMode(HTML_TEMPLATE_MODE);
-            resolver.setSuffix(HTML_FILE_EXTENSION);
-            resolver.setPrefix(HTML_DIR);
+            htmlResolver.setTemplateMode(HTML_TEMPLATE_MODE);
+            htmlResolver.setSuffix(HTML_FILE_EXTENSION);
+            htmlResolver.setPrefix(HTML_DIR);
         } else if (templateMode == getByName(CSS_TEMPLATE_MODE)) {
-            resolver.setTemplateMode(CSS_TEMPLATE_MODE);
-            resolver.setSuffix(CSS_FILE_EXTENSION);
-            resolver.setPrefix(CSS_DIR);
+            cssResolver.setTemplateMode(CSS_TEMPLATE_MODE);
+            cssResolver.setSuffix(CSS_FILE_EXTENSION);
+            cssResolver.setPrefix(CSS_DIR);
         }
     }
 }

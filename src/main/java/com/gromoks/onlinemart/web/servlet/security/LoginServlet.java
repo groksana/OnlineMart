@@ -18,8 +18,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
-import static com.gromoks.onlinemart.web.util.PasswordEncryption.encryptPassword;
+import static com.gromoks.onlinemart.web.servlet.security.util.PasswordEncryption.encryptPassword;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class LoginServlet extends HttpServlet {
@@ -44,7 +43,7 @@ public class LoginServlet extends HttpServlet {
         Map<String, Object> map = new HashMap<>();
         map.put("message", errorMessage);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("login", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("login", map);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

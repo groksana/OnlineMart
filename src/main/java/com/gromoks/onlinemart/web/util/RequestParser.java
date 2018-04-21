@@ -28,7 +28,12 @@ public class RequestParser {
 
     public static String checkAddProductState(HttpServletRequest httpServletRequest, SessionStore sessionStore) {
         String token = getSecurityToken(httpServletRequest, sessionStore);
-        Optional<User> user = Optional.ofNullable(sessionStore.getUserByToken(token));
+        Optional<User> user;
+        if (token != null) {
+            user = Optional.of(sessionStore.getUserByToken(token));
+        } else {
+            user = Optional.empty();
+        }
 
         UserRole userRole = UserRole.GUEST;
         if (user.isPresent()) {

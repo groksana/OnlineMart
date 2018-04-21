@@ -15,7 +15,6 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class LogoutServlet extends HttpServlet {
@@ -50,7 +49,7 @@ public class LogoutServlet extends HttpServlet {
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("logout", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("logout", map);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);
