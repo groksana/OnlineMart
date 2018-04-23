@@ -18,7 +18,7 @@ import java.io.PrintWriter;
 import java.time.LocalDateTime;
 import java.util.*;
 
-import static com.gromoks.onlinemart.web.servlet.security.util.PasswordEncryption.encryptPassword;
+import static com.gromoks.onlinemart.security.util.PasswordEncryption.encryptPassword;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class LoginServlet extends HttpServlet {

@@ -1,6 +1,10 @@
 package com.gromoks.onlinemart.web.filter;
 
+import com.gromoks.onlinemart.entity.User;
 import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.security.entity.UserRole;
+import com.gromoks.onlinemart.security.util.SecurityUtil;
+import com.gromoks.onlinemart.web.request.UserRoleRequestWrapper;
 
 import javax.servlet.*;
 import javax.servlet.http.Cookie;
@@ -24,22 +28,35 @@ public class SecurityFilter implements Filter {
             filterChain.doFilter(httpServletRequest, httpServletResponse);
             return;
         }
+
+        HttpServletRequest wrapHttpServletRequest;
         Cookie[] cookies = httpServletRequest.getCookies();
 
         boolean isLoggedIn = false;
+        User user = null;
         if (cookies != null) {
             for (Cookie cookie : cookies) {
                 String cookieName = cookie.getName();
                 if ("security-token".equals(cookieName)) {
                    if (sessionStore.isValid(cookie.getValue())) {
                        isLoggedIn = true;
+                       user = sessionStore.getUserByToken(cookie.getValue());
                    }
                 }
             }
         }
 
         if (isLoggedIn) {
-            filterChain.doFilter(httpServletRequest, httpServletResponse);
+            String userName = user.getLogin();
+            UserRole userRole = user.getRole();
+            wrapHttpServletRequest = new UserRoleRequestWrapper(userName, userRole, httpServletRequest);
+
+            boolean hasPermission = SecurityUtil.hasPermission(wrapHttpServletRequest);
+            if (!hasPermission) {
+                httpServletResponse.sendRedirect("/user");
+                return;
+            }
+            filterChain.doFilter(wrapHttpServletRequest, httpServletResponse);
         } else {
             httpServletResponse.sendRedirect("/login");
         }
