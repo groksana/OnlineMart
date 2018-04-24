@@ -22,19 +22,17 @@ public class NewProductServlet extends HttpServlet {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private ProductService productService;
-    private SessionStore sessionStore;
     private String errorMessage;
 
-    public NewProductServlet(ProductService productService, SessionStore sessionStore) {
+    public NewProductServlet(ProductService productService) {
         this.productService = productService;
-        this.sessionStore = sessionStore;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();

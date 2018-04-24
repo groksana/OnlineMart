@@ -18,11 +18,9 @@ import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState
 public class ProductsServlet extends HttpServlet {
 
     private ProductService productService;
-    private SessionStore sessionStore;
 
-    public ProductsServlet(ProductService productService, SessionStore sessionStore) {
+    public ProductsServlet(ProductService productService) {
         this.productService = productService;
-        this.sessionStore = sessionStore;
     }
 
     @Override
@@ -30,7 +28,7 @@ public class ProductsServlet extends HttpServlet {
         PrintWriter writer = resp.getWriter();
 
         List<Product> productList = productService.getAll();
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();

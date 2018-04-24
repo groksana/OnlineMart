@@ -53,7 +53,7 @@ public class SecurityFilter implements Filter {
 
             boolean hasPermission = SecurityUtil.hasPermission(wrapHttpServletRequest);
             if (!hasPermission) {
-                httpServletResponse.sendRedirect("/user");
+                httpServletResponse.sendRedirect("/accessdenied");
                 return;
             }
             filterChain.doFilter(wrapHttpServletRequest, httpServletResponse);

@@ -22,12 +22,14 @@ public class SecurityConfig {
         List<String> uriAdminAccess = new ArrayList<>();
         uriAdminAccess.add("/newproduct");
         uriAdminAccess.add("/cart");
+        uriAdminAccess.add("/cart/*");
         uriAdminAccess.add("/user");
         MAP_CONFIG.put(UserRole.ADMIN, uriAdminAccess);
 
         //Configuration for User
         List<String> uriUserAccess = new ArrayList<>();
         uriUserAccess.add("/cart");
+        uriUserAccess.add("/cart/*");
         uriUserAccess.add("/user");
         MAP_CONFIG.put(UserRole.USER, uriUserAccess);
     }

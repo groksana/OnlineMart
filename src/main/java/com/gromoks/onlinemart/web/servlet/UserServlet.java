@@ -28,7 +28,7 @@ public class UserServlet extends HttpServlet {
         String token = getSecurityToken(req, sessionStore);
 
         User user = sessionStore.getUserByToken(token);
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();

@@ -2,7 +2,9 @@ package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.security.SessionStore;
+import com.gromoks.onlinemart.security.entity.UserRole;
 import com.gromoks.onlinemart.service.ProductService;
+import com.gromoks.onlinemart.web.request.UserRoleRequestWrapper;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;
@@ -19,11 +21,9 @@ import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState
 public class ProductServlet extends HttpServlet {
 
     private ProductService productService;
-    private SessionStore sessionStore;
 
-    public ProductServlet(ProductService productService, SessionStore sessionStore) {
+    public ProductServlet(ProductService productService) {
         this.productService = productService;
-        this.sessionStore = sessionStore;
     }
 
     @Override
@@ -32,7 +32,7 @@ public class ProductServlet extends HttpServlet {
         int productId = Integer.valueOf(uris[2]);
 
         Product product = productService.getById(productId);
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();

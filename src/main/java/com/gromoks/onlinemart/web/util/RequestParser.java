@@ -49,4 +49,27 @@ public class RequestParser {
         }
         return addProductState;
     }
+
+    public static String checkAddProductState(HttpServletRequest httpServletRequest) {
+        String addProductState;
+        if (httpServletRequest.isUserInRole(UserRole.ADMIN.toString())) {
+            addProductState = "active";
+        } else {
+            addProductState = "disabled";
+        }
+        return addProductState;
+    }
+
+    public static String getUrlPattern(HttpServletRequest httpServletRequest) {
+        String servletPath = httpServletRequest.getServletPath();
+        String pathInfo = httpServletRequest.getPathInfo();
+
+        String urlPattern;
+        if (pathInfo != null) {
+            urlPattern = servletPath + "/*";
+            return urlPattern;
+        }
+
+        return servletPath;
+    }
 }
