@@ -2,7 +2,6 @@ package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
 import com.gromoks.onlinemart.security.SessionStore;
-import com.gromoks.onlinemart.security.entity.UserRole;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
 import javax.servlet.ServletException;

@@ -1,6 +1,5 @@
 package com.gromoks.onlinemart.web.servlet.security;
 
-import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
