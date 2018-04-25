@@ -21,6 +21,7 @@
 
         <!-- Database properties -->
         <mysql.version>5.1.26</mysql.version>
+        <jdbctemplate.version>1.0-SNAPSHOT</jdbctemplate.version>
 
         <!-- ThymeLeaf properties -->
         <thymeleaf.version>3.0.9.RELEASE</thymeleaf.version>
@@ -83,6 +84,13 @@
             <groupId>org.postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.4-1201-jdbc4</version>
+        </dependency>
+
+        <!-- JdbcTemplate -->
+        <dependency>
+            <groupId>com.gromoks</groupId>
+            <artifactId>jdbctemplate</artifactId>
+            <version>${jdbctemplate.version}</version>
         </dependency>
 
         <!-- ThymeLeaf -->

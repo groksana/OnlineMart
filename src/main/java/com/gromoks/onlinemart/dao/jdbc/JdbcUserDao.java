@@ -2,7 +2,7 @@ package com.gromoks.onlinemart.dao.jdbc;
 
 import com.gromoks.onlinemart.dao.UserDao;
 import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
-import com.gromoks.onlinemart.dao.jdbc.mapper.impl.UserRowMapper;
+import com.gromoks.onlinemart.dao.jdbc.mapper.UserRowMapper;
 import com.gromoks.onlinemart.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

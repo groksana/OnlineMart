@@ -1,9 +1,9 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
+import com.gromoks.jdbctemplate.NamedParameterJdbcTemplate;
 import com.gromoks.onlinemart.dao.ProductDao;
 import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
-import com.gromoks.onlinemart.dao.jdbc.mapper.impl.ProductRowMapper;
-import com.gromoks.onlinemart.dao.jdbc.template.NamedParameterJdbcTemplate;
+import com.gromoks.onlinemart.dao.jdbc.mapper.ProductRowMapper;
 import com.gromoks.onlinemart.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

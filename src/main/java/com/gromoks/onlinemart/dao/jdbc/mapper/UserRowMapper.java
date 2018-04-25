@@ -1,6 +1,6 @@
-package com.gromoks.onlinemart.dao.jdbc.mapper.impl;
+package com.gromoks.onlinemart.dao.jdbc.mapper;
 
-import com.gromoks.onlinemart.dao.jdbc.mapper.RowMapper;
+import com.gromoks.jdbctemplate.mapper.RowMapper;
 import com.gromoks.onlinemart.entity.User;
 
 import java.sql.ResultSet;
