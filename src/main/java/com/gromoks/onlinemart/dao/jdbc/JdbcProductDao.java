@@ -2,7 +2,8 @@ package com.gromoks.onlinemart.dao.jdbc;
 
 import com.gromoks.onlinemart.dao.ProductDao;
 import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
-import com.gromoks.onlinemart.dao.jdbc.mapper.ProductRowMapper;
+import com.gromoks.onlinemart.dao.jdbc.mapper.impl.ProductRowMapper;
+import com.gromoks.onlinemart.dao.jdbc.template.NamedParameterJdbcTemplate;
 import com.gromoks.onlinemart.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,7 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class JdbcProductDao implements ProductDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
@@ -23,14 +26,17 @@ public class JdbcProductDao implements ProductDao {
 
     private static final String ADD_PRODUCT_SQL = "INSERT INTO PRODUCT(NAME, PRICE, PICTUREPATH, DESCRIPTION) VALUES(?, ?, ?, ?)";
 
-    private static final String SEARCH_PRODUCT_BY_KEY_WORD = "SELECT ID, NAME, PRICE, PICTUREPATH, DESCRIPTION FROM PRODUCT WHERE NAME LIKE ?";
+    private static final String SEARCH_PRODUCT_BY_KEY_WORD = "SELECT ID, NAME, PRICE, PICTUREPATH, DESCRIPTION FROM PRODUCT WHERE NAME LIKE :name";
 
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
+
+    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
     private DataSource dataSource;
 
     public JdbcProductDao(DataSource dataSource) {
         this.dataSource = dataSource;
+        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
     }
 
     @Override
@@ -111,24 +117,11 @@ public class JdbcProductDao implements ProductDao {
         log.info("Start query to search product from DB by keyWord = {}", keyWord);
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(SEARCH_PRODUCT_BY_KEY_WORD)) {
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("name", "%" + keyWord + "%");
+        List<Product> products = namedParameterJdbcTemplate.query(SEARCH_PRODUCT_BY_KEY_WORD, parameterMap, productRowMapper);
 
-            preparedStatement.setString(1, "%" + keyWord + "%");
-            ResultSet resultSet = preparedStatement.executeQuery();
-            log.info("Final statement {}", preparedStatement);
-
-            List<Product> products = new ArrayList<>();
-            while (resultSet.next()) {
-                Product product = productRowMapper.mapRow(resultSet);
-                products.add(product);
-            }
-
-            log.info("Finish query to search product from DB by keyWord. It took {} ms", System.currentTimeMillis() - startTime);
-            return products;
-        } catch (SQLException e) {
-            log.error("Issue during search product by key word from db ", e);
-            throw new RuntimeException("Issue during search product by key word from db ", e);
-        }
+        log.info("Finish query to search product from DB by keyWord. It took {} ms", System.currentTimeMillis() - startTime);
+        return products;
     }
 }
