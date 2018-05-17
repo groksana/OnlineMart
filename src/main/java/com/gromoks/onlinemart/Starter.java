@@ -1,15 +1,7 @@
 package com.gromoks.onlinemart;
 
-import com.gromoks.onlinemart.dao.ProductDao;
-import com.gromoks.onlinemart.dao.UserDao;
-import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
-import com.gromoks.onlinemart.dao.jdbc.JdbcProductDao;
-import com.gromoks.onlinemart.dao.jdbc.JdbcUserDao;
-import com.gromoks.onlinemart.service.ProductService;
-import com.gromoks.onlinemart.service.UserService;
-import com.gromoks.onlinemart.service.impl.ProductServiceImpl;
-import com.gromoks.onlinemart.security.SessionStore;
-import com.gromoks.onlinemart.service.impl.UserServiceImpl;
+import com.gromoks.container.context.ApplicationContext;
+import com.gromoks.container.context.ClassPathApplicationContext;
 import com.gromoks.onlinemart.web.filter.MdcFilter;
 import com.gromoks.onlinemart.web.filter.SecurityFilter;
 import com.gromoks.onlinemart.web.filter.UserRoleFilter;
@@ -27,50 +19,31 @@ import java.util.EnumSet;
 
 public class Starter {
 
-    public static String PORT = System.getenv("PORT");
+    public static String PORT = "5000";
 
     public static void main(String[] args) throws Exception {
-        // common
-        SessionStore sessionStore = new SessionStore();
-        DataSource dataSource = new DataSource();
-        ProductDao jdbcProductDao = new JdbcProductDao(dataSource);
-        UserDao jdbcUserDao = new JdbcUserDao(dataSource);
-        ProductService productService = new ProductServiceImpl(jdbcProductDao);
-        UserService userService = new UserServiceImpl(jdbcUserDao);
+        ApplicationContext applicationContext = new ClassPathApplicationContext(new String[] {"src/main/resources/context/database-context.xml", "src/main/resources/context/onlinemart-context.xml"});
 
-        // servlet
-        ProductsServlet productsServlet = new ProductsServlet(productService);
-        ProductServlet productServlet = new ProductServlet(productService);
-        NewProductServlet newProductServlet = new NewProductServlet(productService);
-        ProductSearchServlet productSearchServlet = new ProductSearchServlet(productService);
-        CartAddServlet cartAddServlet = new CartAddServlet(productService, sessionStore);
-        CartServlet cartServlet = new CartServlet(sessionStore);
-        UserServlet userServlet = new UserServlet(sessionStore);
-        AssetsServlet assetsServlet = new AssetsServlet();
-
-        // security
-        LoginServlet loginServlet = new LoginServlet(userService, sessionStore);
-        LogoutServlet logoutServlet = new LogoutServlet(sessionStore);
-        SecurityFilter securityFilter = new SecurityFilter(sessionStore);
-        AccessDeniedServlet accessDeniedServlet = new AccessDeniedServlet();
-        UserRoleFilter userRoleFilter = new UserRoleFilter(sessionStore);
+         // security
+        SecurityFilter securityFilter = (SecurityFilter) applicationContext.getBean("securityFilter");
+        UserRoleFilter userRoleFilter = (UserRoleFilter) applicationContext.getBean("userRoleFilter");
 
         //logging
-        MdcFilter mdcFilter = new MdcFilter(sessionStore);
+        MdcFilter mdcFilter = (MdcFilter) applicationContext.getBean("mdcFilter");
 
         // server
         ServletContextHandler context = new ServletContextHandler(ServletContextHandler.NO_SESSIONS);
-        context.addServlet(new ServletHolder(productSearchServlet), "/products/search");
-        context.addServlet(new ServletHolder(productsServlet), "/products");
-        context.addServlet(new ServletHolder(loginServlet), "/login");
-        context.addServlet(new ServletHolder(logoutServlet), "/logout");
-        context.addServlet(new ServletHolder(productServlet), "/product/*");
-        context.addServlet(new ServletHolder(newProductServlet), "/newproduct");
-        context.addServlet(new ServletHolder(cartAddServlet), "/cart/*");
-        context.addServlet(new ServletHolder(cartServlet), "/cart");
-        context.addServlet(new ServletHolder(userServlet), "/user");
-        context.addServlet(new ServletHolder(assetsServlet), "/assets/*");
-        context.addServlet(new ServletHolder(accessDeniedServlet), "/accessdenied");
+        context.addServlet(new ServletHolder((ProductSearchServlet) applicationContext.getBean("productSearchServlet")), "/products/search");
+        context.addServlet(new ServletHolder((ProductsServlet) applicationContext.getBean("productsServlet")), "/products");
+        context.addServlet(new ServletHolder((LoginServlet) applicationContext.getBean("loginServlet")), "/login");
+        context.addServlet(new ServletHolder((LogoutServlet) applicationContext.getBean("logoutServlet")), "/logout");
+        context.addServlet(new ServletHolder((ProductServlet) applicationContext.getBean("productServlet")), "/product/*");
+        context.addServlet(new ServletHolder((NewProductServlet) applicationContext.getBean("newProductServlet")), "/newproduct");
+        context.addServlet(new ServletHolder((CartAddServlet) applicationContext.getBean("cartAddServlet")), "/cart/*");
+        context.addServlet(new ServletHolder((CartServlet) applicationContext.getBean("cartServlet")), "/cart");
+        context.addServlet(new ServletHolder((UserServlet) applicationContext.getBean("userServlet")), "/user");
+        context.addServlet(new ServletHolder((AssetsServlet) applicationContext.getBean("assetsServlet")), "/assets/*");
+        context.addServlet(new ServletHolder((AccessDeniedServlet) applicationContext.getBean("accessDeniedServlet")), "/accessdenied");
 
         context.addFilter(new FilterHolder(securityFilter), "/cart/*", EnumSet.of(DispatcherType.REQUEST));
         context.addFilter(new FilterHolder(securityFilter), "/user/*", EnumSet.of(DispatcherType.REQUEST));

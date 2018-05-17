@@ -1,18 +1,14 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
+import com.gromoks.jdbctemplate.JdbcTemplate;
 import com.gromoks.jdbctemplate.NamedParameterJdbcTemplate;
 import com.gromoks.onlinemart.dao.ProductDao;
-import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
 import com.gromoks.onlinemart.dao.jdbc.mapper.ProductRowMapper;
 import com.gromoks.onlinemart.entity.Product;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,13 +26,19 @@ public class JdbcProductDao implements ProductDao {
 
     private final ProductRowMapper productRowMapper = new ProductRowMapper();
 
-    private final NamedParameterJdbcTemplate namedParameterJdbcTemplate;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    private DataSource dataSource;
+    private JdbcTemplate jdbcTemplate;
 
-    public JdbcProductDao(DataSource dataSource) {
-        this.dataSource = dataSource;
-        this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(this.dataSource);
+    public JdbcProductDao() {
+    }
+
+    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
+    }
+
+    public void setJdbcTemplate(JdbcTemplate jdbcTemplate) {
+        this.jdbcTemplate = jdbcTemplate;
     }
 
     @Override
@@ -44,22 +46,16 @@ public class JdbcProductDao implements ProductDao {
         log.info("Start query to get all product from DB");
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_ALL_PRODUCT_SQL);
-             ResultSet resultSet = preparedStatement.executeQuery()) {
-
-            List<Product> products = new ArrayList<>();
-
-            while (resultSet.next()) {
-                Product product = productRowMapper.mapRow(resultSet);
-                products.add(product);
-            }
-            log.info("Finish query to get all product from DB. It took {} ms", System.currentTimeMillis() - startTime);
-            return products;
+        List<Product> products;
+        try {
+            products = jdbcTemplate.query(GET_ALL_PRODUCT_SQL, productRowMapper);
         } catch (SQLException e) {
             log.error("Issue during extract all product from db ", e);
             throw new RuntimeException("Issue during extract all product from db ", e);
         }
+
+        log.info("Finish query to get all product from DB. It took {} ms", System.currentTimeMillis() - startTime);
+        return products;
     }
 
     @Override
@@ -69,7 +65,7 @@ public class JdbcProductDao implements ProductDao {
 
         Map<String, Object> parameterMap = new HashMap<>();
         parameterMap.put("id", productId);
-        Product product = null;
+        Product product;
         try {
             product = namedParameterJdbcTemplate.queryForObject(GET_PRODUCT_BY_ID_SQL, parameterMap, productRowMapper);
         } catch (SQLException e) {

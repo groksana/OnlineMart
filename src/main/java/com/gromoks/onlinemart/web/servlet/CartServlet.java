@@ -19,7 +19,7 @@ import static com.gromoks.onlinemart.web.util.RequestParser.*;
 public class CartServlet extends HttpServlet {
     private SessionStore sessionStore;
 
-    public CartServlet(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

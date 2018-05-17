@@ -1,0 +1,24 @@
+<beans>
+    <bean id="dataSource" class="com.gromoks.onlinemart.dao.jdbc.config.DataSource">
+        <property name="url" value="jdbc:postgresql://localhost:5432/onlinemart"/>
+        <property name="username" value="postgres"/>
+        <property name="password" value="root"/>
+    </bean>
+
+    <bean id="namedParameterJdbcTemplate" class="com.gromoks.jdbctemplate.NamedParameterJdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="jdbcTemplate" class="com.gromoks.jdbctemplate.JdbcTemplate">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="productDao" class="com.gromoks.onlinemart.dao.jdbc.JdbcProductDao">
+        <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+        <property name="jdbcTemplate" ref="jdbcTemplate"/>
+    </bean>
+
+    <bean id="userDao" class="com.gromoks.onlinemart.dao.jdbc.JdbcUserDao">
+        <property name="namedParameterJdbcTemplate" ref="namedParameterJdbcTemplate"/>
+    </bean>
+</beans>

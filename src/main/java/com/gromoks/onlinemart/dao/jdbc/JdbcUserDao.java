@@ -1,28 +1,27 @@
 package com.gromoks.onlinemart.dao.jdbc;
 
+import com.gromoks.jdbctemplate.NamedParameterJdbcTemplate;
 import com.gromoks.onlinemart.dao.UserDao;
-import com.gromoks.onlinemart.dao.jdbc.config.DataSource;
 import com.gromoks.onlinemart.dao.jdbc.mapper.UserRowMapper;
 import com.gromoks.onlinemart.entity.User;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 public class JdbcUserDao implements UserDao {
     private final Logger log = LoggerFactory.getLogger(getClass());
 
-    private static final String GET_USER = " SELECT NICKNAME, EMAIL, ROLE FROM USERS WHERE email = ? and password = ?";
+    private static final String GET_USER = " SELECT NICKNAME, EMAIL, ROLE FROM USERS WHERE email = :email and password = :password";
 
     private final UserRowMapper userRowMapper = new UserRowMapper();
-    private DataSource dataSource;
+    private NamedParameterJdbcTemplate namedParameterJdbcTemplate;
 
-    public JdbcUserDao(DataSource dataSource) {
-        this.dataSource = dataSource;
+    public void setNamedParameterJdbcTemplate(NamedParameterJdbcTemplate namedParameterJdbcTemplate) {
+        this.namedParameterJdbcTemplate = namedParameterJdbcTemplate;
     }
 
     @Override
@@ -30,27 +29,19 @@ public class JdbcUserDao implements UserDao {
         log.info("Start query to get user by email and password from db");
         long startTime = System.currentTimeMillis();
 
-        try (Connection connection = dataSource.getConnection();
-             PreparedStatement preparedStatement = connection.prepareStatement(GET_USER)) {
+        Map<String, Object> parameterMap = new HashMap<>();
+        parameterMap.put("email", login);
+        parameterMap.put("password", password);
 
-            preparedStatement.setString(1, login);
-            preparedStatement.setString(2, password);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            Optional<User> user = Optional.empty();
-            if (resultSet.next()) {
-                user = Optional.of(userRowMapper.mapRow(resultSet));
-            } else if (resultSet.next()) {
-                log.error("Constraint violation. We can't have several users per email");
-                throw new RuntimeException("Constraint violation. We can't have several users per email");
-            }
-
-            log.info("Finish query to get user by email and password from DB. It took {} ms", System.currentTimeMillis() - startTime);
-            return user;
+        Optional<User> user;
+        try {
+            user = Optional.of(namedParameterJdbcTemplate.queryForObject(GET_USER, parameterMap, userRowMapper));
         } catch (SQLException e) {
-            log.error("Issue during extract user by email and password ", e);
-            throw new RuntimeException("Issue during extract user by email and password ", e);
+            log.error("Issue during extract product by id from db ", e);
+            throw new RuntimeException("Issue during extract product by id from db ", e);
         }
 
+        log.info("Finish query to get user by email and password from DB. It took {} ms", System.currentTimeMillis() - startTime);
+        return user;
     }
 }

@@ -14,7 +14,7 @@ import java.io.IOException;
 public class UserRoleFilter implements Filter {
     private SessionStore sessionStore;
 
-    public UserRoleFilter(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

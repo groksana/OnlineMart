@@ -28,8 +28,11 @@ public class LoginServlet extends HttpServlet {
     private SessionStore sessionStore;
     private String errorMessage;
 
-    public LoginServlet(UserService userService, SessionStore sessionStore) {
+    public void setUserService(UserService userService) {
         this.userService = userService;
+    }
+
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

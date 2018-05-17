@@ -15,7 +15,7 @@ import java.io.IOException;
 public class SecurityFilter implements Filter {
     private SessionStore sessionStore;
 
-    public SecurityFilter(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

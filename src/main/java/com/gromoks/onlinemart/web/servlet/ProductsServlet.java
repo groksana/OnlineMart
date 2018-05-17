@@ -18,7 +18,7 @@ public class ProductsServlet extends HttpServlet {
 
     private ProductService productService;
 
-    public ProductsServlet(ProductService productService) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 

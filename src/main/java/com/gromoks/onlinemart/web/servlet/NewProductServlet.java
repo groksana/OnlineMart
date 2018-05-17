@@ -23,7 +23,7 @@ public class NewProductServlet extends HttpServlet {
     private ProductService productService;
     private String errorMessage;
 
-    public NewProductServlet(ProductService productService) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 

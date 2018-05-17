@@ -21,7 +21,7 @@ public class LogoutServlet extends HttpServlet {
     private final Logger log = LoggerFactory.getLogger(getClass());
     private SessionStore sessionStore;
 
-    public LogoutServlet(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

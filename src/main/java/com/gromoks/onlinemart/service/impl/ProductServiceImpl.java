@@ -7,29 +7,29 @@ import com.gromoks.onlinemart.service.ProductService;
 import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
-    private ProductDao jdbcProductDao;
+    private ProductDao productDao;
 
-    public ProductServiceImpl(ProductDao jdbcProductDao) {
-        this.jdbcProductDao = jdbcProductDao;
+    public void setProductDao(ProductDao productDao) {
+        this.productDao = productDao;
     }
 
     @Override
     public List<Product> getAll() {
-        return jdbcProductDao.getAll();
+        return productDao.getAll();
     }
 
     @Override
     public Product getById(int productId) {
-        return jdbcProductDao.getById(productId);
+        return productDao.getById(productId);
     }
 
     @Override
     public int add(Product product) {
-        return jdbcProductDao.add(product);
+        return productDao.add(product);
     }
 
     @Override
     public List<Product> search(String keyWord) {
-        return jdbcProductDao.search(keyWord);
+        return productDao.search(keyWord);
     }
 }

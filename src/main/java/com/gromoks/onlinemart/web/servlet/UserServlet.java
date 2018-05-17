@@ -19,7 +19,7 @@ import static com.gromoks.onlinemart.web.util.RequestParser.getSecurityToken;
 public class UserServlet extends HttpServlet {
     private SessionStore sessionStore;
 
-    public UserServlet(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

@@ -19,7 +19,7 @@ import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState
 public class ProductSearchServlet extends HttpServlet {
     private ProductService productService;
 
-    public ProductSearchServlet(ProductService productService) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
     }
 

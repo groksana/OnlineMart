@@ -15,7 +15,7 @@ public class MdcFilter implements Filter {
     private static final String GUEST = "guest";
     private SessionStore sessionStore;
 
-    public MdcFilter(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 

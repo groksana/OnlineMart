@@ -15,9 +15,9 @@ import java.util.Properties;
 
 public class DataSource implements javax.sql.DataSource {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private final String url;
-    private final String username;
-    private final String password;
+    private String url;
+    private String username;
+    private String password;
 
     public DataSource() {
         Properties properties = new Properties();
@@ -33,9 +33,18 @@ public class DataSource implements javax.sql.DataSource {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        url = System.getenv("JDBC_DATABASE_URL");
-        username = System.getenv("JDBC_DATABASE_USERNAME");
-        password = System.getenv("JDBC_DATABASE_PASSWORD");
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Connection getConnection() throws SQLException {
