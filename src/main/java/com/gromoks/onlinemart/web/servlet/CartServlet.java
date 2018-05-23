@@ -14,13 +14,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.*;
 import static com.gromoks.onlinemart.web.util.RequestParser.*;
 
 public class CartServlet extends HttpServlet {
     private SessionStore sessionStore;
 
-    public CartServlet(SessionStore sessionStore) {
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 
@@ -31,13 +30,13 @@ public class CartServlet extends HttpServlet {
         String token = getSecurityToken(req, sessionStore);
 
         List<Product> productCart = sessionStore.getCartByToken(token);
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();
         map.put("cart", productCart);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("cart", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("cart", map);
         writer.write(page);
         resp.setStatus(HttpServletResponse.SC_OK);
     }

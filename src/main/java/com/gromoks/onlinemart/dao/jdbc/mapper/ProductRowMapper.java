@@ -1,11 +1,13 @@
-package com.gromoks.onlinemart.dao.mapper;
+package com.gromoks.onlinemart.dao.jdbc.mapper;
 
+import com.gromoks.jdbctemplate.mapper.RowMapper;
 import com.gromoks.onlinemart.entity.Product;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class ProductRowMapper {
+public class ProductRowMapper implements RowMapper<Product> {
+    @Override
     public Product mapRow(ResultSet resultSet) throws SQLException {
         Product product = new Product();
         product.setId(resultSet.getInt("id"));

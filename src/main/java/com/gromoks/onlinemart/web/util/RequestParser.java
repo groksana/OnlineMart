@@ -28,7 +28,12 @@ public class RequestParser {
 
     public static String checkAddProductState(HttpServletRequest httpServletRequest, SessionStore sessionStore) {
         String token = getSecurityToken(httpServletRequest, sessionStore);
-        Optional<User> user = Optional.ofNullable(sessionStore.getUserByToken(token));
+        Optional<User> user;
+        if (token != null) {
+            user = Optional.of(sessionStore.getUserByToken(token));
+        } else {
+            user = Optional.empty();
+        }
 
         UserRole userRole = UserRole.GUEST;
         if (user.isPresent()) {
@@ -43,5 +48,28 @@ public class RequestParser {
             addProductState = "disabled";
         }
         return addProductState;
+    }
+
+    public static String checkAddProductState(HttpServletRequest httpServletRequest) {
+        String addProductState;
+        if (httpServletRequest.isUserInRole(UserRole.ADMIN.toString())) {
+            addProductState = "active";
+        } else {
+            addProductState = "disabled";
+        }
+        return addProductState;
+    }
+
+    public static String getUrlPattern(HttpServletRequest httpServletRequest) {
+        String servletPath = httpServletRequest.getServletPath();
+        String pathInfo = httpServletRequest.getPathInfo();
+
+        String urlPattern;
+        if (pathInfo != null) {
+            urlPattern = servletPath + "/*";
+            return urlPattern;
+        }
+
+        return servletPath;
     }
 }

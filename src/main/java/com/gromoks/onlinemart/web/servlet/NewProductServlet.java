@@ -1,7 +1,6 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 import org.slf4j.Logger;
@@ -16,32 +15,29 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class NewProductServlet extends HttpServlet {
 
     private final Logger log = LoggerFactory.getLogger(getClass());
     private ProductService productService;
-    private SessionStore sessionStore;
     private String errorMessage;
 
-    public NewProductServlet(ProductService productService, SessionStore sessionStore) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
-        this.sessionStore = sessionStore;
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         PrintWriter writer = resp.getWriter();
 
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();
         map.put("message", errorMessage);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("newproduct", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("newproduct", map);
         writer.write(page);
 
         resp.setStatus(HttpServletResponse.SC_OK);

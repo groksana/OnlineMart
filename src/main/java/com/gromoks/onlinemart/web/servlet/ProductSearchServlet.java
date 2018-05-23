@@ -1,7 +1,6 @@
 package com.gromoks.onlinemart.web.servlet;
 
 import com.gromoks.onlinemart.entity.Product;
-import com.gromoks.onlinemart.security.SessionStore;
 import com.gromoks.onlinemart.service.ProductService;
 import com.gromoks.onlinemart.web.templater.ThymeLeafPageGenerator;
 
@@ -15,16 +14,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static com.gromoks.onlinemart.web.entity.TemplateMode.HTML;
 import static com.gromoks.onlinemart.web.util.RequestParser.checkAddProductState;
 
 public class ProductSearchServlet extends HttpServlet {
     private ProductService productService;
-    private SessionStore sessionStore;
 
-    public ProductSearchServlet(ProductService productService, SessionStore sessionStore) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
-        this.sessionStore = sessionStore;
     }
 
     @Override
@@ -32,13 +28,13 @@ public class ProductSearchServlet extends HttpServlet {
         String keyWord = req.getParameter("name");
 
         List<Product> products = productService.search(keyWord);
-        String addProductState = checkAddProductState(req, sessionStore);
+        String addProductState = checkAddProductState(req);
 
         ThymeLeafPageGenerator thymeLeafPageGenerator = ThymeLeafPageGenerator.instance();
         Map<String, Object> map = new HashMap<>();
         map.put("products", products);
         map.put("addProductState", addProductState);
-        String page = thymeLeafPageGenerator.getPage("products", HTML, map);
+        String page = thymeLeafPageGenerator.getHtmlPage("products", map);
         resp.setCharacterEncoding( "UTF-8" );
         PrintWriter writer = resp.getWriter();
         writer.write(page);

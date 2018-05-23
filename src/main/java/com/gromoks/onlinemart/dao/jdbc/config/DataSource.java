@@ -1,30 +1,27 @@
-package com.gromoks.onlinemart.dao.config;
+package com.gromoks.onlinemart.dao.jdbc.config;
 
 import com.gromoks.onlinemart.exception.FileLoadException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.sql.DataSource;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintWriter;
-import java.net.URI;
-import java.net.URISyntaxException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.SQLFeatureNotSupportedException;
 import java.util.Properties;
 
-public class MyDataSource implements DataSource{
+public class DataSource implements javax.sql.DataSource {
     private final Logger log = LoggerFactory.getLogger(getClass());
-    private Properties properties = new Properties();
-    private final String url;
-    private final String username;
-    private final String password;
+    private String url;
+    private String username;
+    private String password;
 
-    public MyDataSource() {
-        try (InputStream inputStream = MyDataSource.class.getClassLoader().getResourceAsStream("db/database.properties")) {
+    public DataSource() {
+        Properties properties = new Properties();
+        try (InputStream inputStream = DataSource.class.getClassLoader().getResourceAsStream("db/database.properties")) {
             properties.load(inputStream);
         } catch (IOException e) {
             log.error("File database.properties can't be loaded: ", e);
@@ -36,9 +33,18 @@ public class MyDataSource implements DataSource{
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
-        url = System.getenv("JDBC_DATABASE_URL");
-        username = System.getenv("JDBC_DATABASE_USERNAME");
-        password = System.getenv("JDBC_DATABASE_PASSWORD");
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Connection getConnection() throws SQLException {

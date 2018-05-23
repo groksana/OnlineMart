@@ -1,0 +1,65 @@
+<beans>
+    <bean id="sessionStore" class="com.gromoks.onlinemart.security.SessionStore"/>
+
+    <bean id="productService" class="com.gromoks.onlinemart.service.impl.ProductServiceImpl">
+        <property name="productDao" ref="productDao"/>
+    </bean>
+
+    <bean id="userService" class="com.gromoks.onlinemart.service.impl.UserServiceImpl">
+        <property name="userDao" ref="userDao"/>
+    </bean>
+
+    <bean id="productsServlet" class="com.gromoks.onlinemart.web.servlet.ProductsServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="productServlet" class="com.gromoks.onlinemart.web.servlet.ProductServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="newProductServlet" class="com.gromoks.onlinemart.web.servlet.NewProductServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="productSearchServlet" class="com.gromoks.onlinemart.web.servlet.ProductSearchServlet">
+        <property name="productService" ref="productService"/>
+    </bean>
+
+    <bean id="cartAddServlet" class="com.gromoks.onlinemart.web.servlet.CartAddServlet">
+        <property name="productService" ref="productService"/>
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="cartServlet" class="com.gromoks.onlinemart.web.servlet.CartServlet">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="userServlet" class="com.gromoks.onlinemart.web.servlet.UserServlet">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="assetsServlet" class="com.gromoks.onlinemart.web.servlet.AssetsServlet"/>
+
+    <bean id="accessDeniedServlet" class="com.gromoks.onlinemart.web.servlet.security.AccessDeniedServlet"/>
+
+    <bean id="loginServlet" class="com.gromoks.onlinemart.web.servlet.security.LoginServlet">
+        <property name="userService" ref="userService"/>
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="logoutServlet" class="com.gromoks.onlinemart.web.servlet.security.LogoutServlet">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="securityFilter" class="com.gromoks.onlinemart.web.filter.SecurityFilter">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="userRoleFilter" class="com.gromoks.onlinemart.web.filter.UserRoleFilter">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+
+    <bean id="mdcFilter" class="com.gromoks.onlinemart.web.filter.MdcFilter">
+        <property name="sessionStore" ref="sessionStore"/>
+    </bean>
+</beans>

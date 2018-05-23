@@ -1,4 +1,4 @@
-package com.gromoks.onlinemart.web.util;
+package com.gromoks.onlinemart.security.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

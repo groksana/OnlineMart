@@ -18,8 +18,11 @@ public class CartAddServlet extends HttpServlet {
 
     private SessionStore sessionStore;
 
-    public CartAddServlet(ProductService productService, SessionStore sessionStore) {
+    public void setProductService(ProductService productService) {
         this.productService = productService;
+    }
+
+    public void setSessionStore(SessionStore sessionStore) {
         this.sessionStore = sessionStore;
     }
 
